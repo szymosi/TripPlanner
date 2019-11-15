@@ -2,6 +2,7 @@ package com.szymonosicinski.tripplanner.Entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,20 +16,30 @@ import java.util.UUID;
 public class User implements Serializable {
     @Id
     @Column(name="id")
-    UUID id;
+    @org.hibernate.annotations.Type(type = "pg-uuid")
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    private UUID id;
 
     @Column(name="username")
 
-    String username;
+    private String username;
 
     @Column(name="passwordhash")
-    String password;
+    private String password;
 
     @Column(name="name")
-    String name;
+    private String name;
 
     @Column(name="surname")
-    String surname;
+    private String surname;
+
+    public User(){
+        username="";
+        password="";
+        name="";
+        surname="";
+    }
 
     @Override
     public String toString(){
