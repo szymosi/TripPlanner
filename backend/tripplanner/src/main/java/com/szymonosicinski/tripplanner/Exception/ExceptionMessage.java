@@ -3,7 +3,8 @@ package com.szymonosicinski.tripplanner.Exception;
 public enum ExceptionMessage {
     USERNAME_TAKEN("Username already exists"),
     PASSWORD_NOT_VALID("Passwod doesn't meet the requirements"),
-    PASSWORDS_NOT_MATCH("Passwords are not the same");
+    PASSWORDS_NOT_MATCH("Passwords are not the same"),
+    USER_NOT_EXIST("User does not exist");
 
     private final String exceptionMessage;
 

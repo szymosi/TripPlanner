@@ -1,9 +1,13 @@
 package com.szymonosicinski.tripplanner.Controller;
 
 
+import com.szymonosicinski.tripplanner.DTO.LoginDTO;
 import com.szymonosicinski.tripplanner.DTO.RegistrationDto;
+import com.szymonosicinski.tripplanner.DTO.UserDTO;
 import com.szymonosicinski.tripplanner.Repository.UserRepository;
 import com.szymonosicinski.tripplanner.Service.UserService;
+import com.szymonosicinski.tripplanner.Util.CurrentUser;
+import com.szymonosicinski.tripplanner.Util.UserPrincipal;
 import org.hibernate.type.PostgresUUIDType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,22 +23,32 @@ import java.util.UUID;
 public class UserController {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserController userController;
     @Autowired
     private UserService userService;
 
     @GetMapping("/{id}")
     public ResponseEntity getUser(@PathVariable("id") final UUID id){
-        return new ResponseEntity(userRepository.findById(id), HttpStatus.OK);
+        return new ResponseEntity(userService.getUser(id), HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity getUser(@RequestParam final String username){
-        return new ResponseEntity(userRepository.findByUsername(username), HttpStatus.OK);
+    public ResponseEntity getUser(@RequestParam(value="username") final String username){
+        return new ResponseEntity<UserDTO>(userService.getUser(username), HttpStatus.OK);
+    }
+
+    @GetMapping("/CurrentUser")
+    public ResponseEntity getCurrentUser(@CurrentUser final UserPrincipal currentUser){
+        return new ResponseEntity(userService.getCurrentUser(currentUser),HttpStatus.OK);
     }
 
     @PutMapping("/Registration")
     public ResponseEntity createUser(@RequestBody @Valid final RegistrationDto registrationDto){
         return new ResponseEntity(userService.register(registrationDto),HttpStatus.CREATED);
+    }
+
+    @PostMapping("/Login")
+    public ResponseEntity login(@RequestBody final LoginDTO loginDTO){
+        return userService.authenticate(loginDTO);
     }
 }

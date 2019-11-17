@@ -22,7 +22,6 @@ public class User implements Serializable {
     private UUID id;
 
     @Column(name="username")
-
     private String username;
 
     @Column(name="passwordhash")
