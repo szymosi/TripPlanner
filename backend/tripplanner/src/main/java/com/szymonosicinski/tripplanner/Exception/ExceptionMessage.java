@@ -4,7 +4,9 @@ public enum ExceptionMessage {
     USERNAME_TAKEN("Username already exists"),
     PASSWORD_NOT_VALID("Passwod doesn't meet the requirements"),
     PASSWORDS_NOT_MATCH("Passwords are not the same"),
-    USER_NOT_EXIST("User does not exist");
+    USER_NOT_EXIST("User does not exist"),
+    RESOURCE_NOT_FOUND("Resource does not exist"),
+    ACCES_DENIED("Permision not granted for operation");
 
     private final String exceptionMessage;
 

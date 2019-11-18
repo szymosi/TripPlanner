@@ -1,8 +1,8 @@
 package com.szymonosicinski.tripplanner.Service;
 
-import com.szymonosicinski.tripplanner.DTO.LoginDTO;
-import com.szymonosicinski.tripplanner.DTO.RegistrationDto;
-import com.szymonosicinski.tripplanner.DTO.UserDTO;
+import com.szymonosicinski.tripplanner.DTO.User.LoginDTO;
+import com.szymonosicinski.tripplanner.DTO.User.RegistrationDto;
+import com.szymonosicinski.tripplanner.DTO.User.UserDTO;
 import com.szymonosicinski.tripplanner.Entity.User;
 import com.szymonosicinski.tripplanner.Exception.ExceptionMessage;
 import com.szymonosicinski.tripplanner.Exception.UserException;
@@ -35,7 +35,7 @@ public class UserService{
     @Autowired
     AuthenticationManager authenticationManager;
 
-    public String register(RegistrationDto registrationDto){
+    public UserDTO register(RegistrationDto registrationDto){
         if (!userValidation.validateUsername(registrationDto.getSurname()))
             throw new UserException(ExceptionMessage.USERNAME_TAKEN.toString());
         if (!userValidation.validatePassword(registrationDto.getPassword()))
@@ -48,7 +48,7 @@ public class UserService{
         User user=modelMapper.map(registrationDto,User.class);
         userRepository.save(user);
 
-        return registrationDto.getUsername();
+        return modelMapper.map(user,UserDTO.class);
     }
 
     public ResponseEntity authenticate(final LoginDTO loginDTO){
@@ -74,6 +74,8 @@ public class UserService{
     }
 
     public UserDTO getCurrentUser(UserPrincipal currentUser){
+        if(currentUser==null)
+            throw new RuntimeException(ExceptionMessage.ACCES_DENIED.toString());
         UserDTO user=modelMapper.map(currentUser,UserDTO.class);
         return user;
     }

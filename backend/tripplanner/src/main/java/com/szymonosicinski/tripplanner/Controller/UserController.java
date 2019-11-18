@@ -1,14 +1,12 @@
 package com.szymonosicinski.tripplanner.Controller;
 
 
-import com.szymonosicinski.tripplanner.DTO.LoginDTO;
-import com.szymonosicinski.tripplanner.DTO.RegistrationDto;
-import com.szymonosicinski.tripplanner.DTO.UserDTO;
-import com.szymonosicinski.tripplanner.Repository.UserRepository;
+import com.szymonosicinski.tripplanner.DTO.User.LoginDTO;
+import com.szymonosicinski.tripplanner.DTO.User.RegistrationDto;
+import com.szymonosicinski.tripplanner.DTO.User.UserDTO;
 import com.szymonosicinski.tripplanner.Service.UserService;
 import com.szymonosicinski.tripplanner.Util.CurrentUser;
 import com.szymonosicinski.tripplanner.Util.UserPrincipal;
-import org.hibernate.type.PostgresUUIDType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +20,6 @@ import java.util.UUID;
 @RequestMapping("/User")
 public class UserController {
 
-    @Autowired
-    private UserController userController;
     @Autowired
     private UserService userService;
 

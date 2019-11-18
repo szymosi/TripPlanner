@@ -1,4 +1,4 @@
-package com.szymonosicinski.tripplanner.DTO;
+package com.szymonosicinski.tripplanner.DTO.User;
 
 import lombok.Getter;
 import lombok.Setter;

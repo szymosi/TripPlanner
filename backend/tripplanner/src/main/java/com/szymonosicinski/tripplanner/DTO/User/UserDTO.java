@@ -1,9 +1,8 @@
-package com.szymonosicinski.tripplanner.DTO;
+package com.szymonosicinski.tripplanner.DTO.User;
 
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
 import java.util.UUID;
 
 @Getter
