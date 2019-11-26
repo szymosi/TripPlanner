@@ -1,9 +1,9 @@
 package com.szymonosicinski.tripplanner.Controller;
 
 
-import com.szymonosicinski.tripplanner.DTO.User.LoginDTO;
-import com.szymonosicinski.tripplanner.DTO.User.RegistrationDto;
-import com.szymonosicinski.tripplanner.DTO.User.UserDTO;
+import com.szymonosicinski.tripplanner.DTO.UserDTO.LoginDTO;
+import com.szymonosicinski.tripplanner.DTO.UserDTO.RegistrationDTO;
+import com.szymonosicinski.tripplanner.DTO.UserDTO.UserDTO;
 import com.szymonosicinski.tripplanner.Service.UserService;
 import com.szymonosicinski.tripplanner.Util.CurrentUser;
 import com.szymonosicinski.tripplanner.Util.UserPrincipal;
@@ -39,7 +39,7 @@ public class UserController {
     }
 
     @PutMapping("/Registration")
-    public ResponseEntity createUser(@RequestBody @Valid final RegistrationDto registrationDto){
+    public ResponseEntity createUser(@RequestBody @Valid final RegistrationDTO registrationDto){
         return new ResponseEntity(userService.register(registrationDto),HttpStatus.CREATED);
     }
 

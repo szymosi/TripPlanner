@@ -5,18 +5,18 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
+import java.util.Optional;
 import java.util.UUID;
-
 
 @Getter
 @Setter
-@Entity()
-@Table(name="user",schema="public")
-public class User implements Serializable {
+@Entity
+@Table(name="expense",schema="public")
+public class Expense {
     @Id
     @Column(name="id")
     @org.hibernate.annotations.Type(type = "pg-uuid")
@@ -25,32 +25,20 @@ public class User implements Serializable {
     private UUID id;
 
     @NotNull
-    @Column(name="username",unique = true)
-    private String username;
-
-    @NotNull
-    @Length(max=60)
-    @Column(name="passwordhash")
-    @JsonIgnore
-    private String password;
-
     @Length(max=50)
     @Column(name="name")
     private String name;
 
-    @Length(max=50)
-    @Column(name="surname")
-    private String surname;
+    @NotNull
+    @Column(name="cost")
+    private float cost;
 
-    public User(){
-        username="";
-        password="";
-        name="";
-        surname="";
-    }
+    @Column(name="actualcost")
+    private float actualCost;
 
-    @Override
-    public String toString(){
-        return username;
-    }
+    @NotNull
+    @ManyToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name="id_budget", referencedColumnName = "id")
+    @JsonIgnore
+    private Budget budget;
 }

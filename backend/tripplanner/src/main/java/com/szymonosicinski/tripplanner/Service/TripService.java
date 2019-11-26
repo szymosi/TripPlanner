@@ -1,9 +1,11 @@
 package com.szymonosicinski.tripplanner.Service;
 
 import com.szymonosicinski.tripplanner.DTO.TripDTO.TripCreateDTO;
+import com.szymonosicinski.tripplanner.Entity.Budget;
 import com.szymonosicinski.tripplanner.Entity.Trip;
 import com.szymonosicinski.tripplanner.Exception.ExceptionMessage;
 import com.szymonosicinski.tripplanner.Exception.UserException;
+import com.szymonosicinski.tripplanner.Repository.BudgetRepository;
 import com.szymonosicinski.tripplanner.Repository.TripRepository;
 import com.szymonosicinski.tripplanner.Util.UserPrincipal;
 import org.modelmapper.ModelMapper;
@@ -28,7 +30,41 @@ public class TripService {
             throw new RuntimeException(ExceptionMessage.ACCES_DENIED.toString());
         Trip trip =modelMapper.map(tripCreateDTO,Trip.class);
         trip.setOrganizer(currentUser.getId());
+        internalEntities(trip);
         tripRepository.save(trip);
+        return trip;
+    }
+
+    public Trip update(UUID tripId, TripCreateDTO tripCreateDTO, UserPrincipal currentUser){
+        if(currentUser==null)
+            throw new RuntimeException(ExceptionMessage.ACCES_DENIED.toString());
+        Trip trip=tripRepository.findById(tripId)
+                .orElseThrow(()->new RuntimeException(ExceptionMessage.RESOURCE_NOT_FOUND.toString()));
+        if(!trip.getOrganizer().equals(currentUser.getId()))
+            throw new RuntimeException(ExceptionMessage.ACCES_DENIED.toString());
+        modelMapper.map(tripCreateDTO,trip);
+        tripRepository.save(trip);
+        return trip;
+    }
+
+    public Trip getById(UUID tripId, UserPrincipal currentUser){
+        if(currentUser==null)
+            throw new RuntimeException(ExceptionMessage.ACCES_DENIED.toString());
+        Trip trip=tripRepository.findById(tripId)
+                .orElseThrow(()->new RuntimeException(ExceptionMessage.RESOURCE_NOT_FOUND.toString()));
+        if(!(trip.getOrganizer().equals(currentUser.getId())||
+                isParticipant(tripId,currentUser)))
+            throw new RuntimeException(ExceptionMessage.ACCES_DENIED.toString());
+        return trip;
+    }
+
+    public Trip getByIdAsOrganizer(UUID tripId, UserPrincipal currentUser){
+        if(currentUser==null)
+            throw new RuntimeException(ExceptionMessage.ACCES_DENIED.toString());
+        Trip trip=tripRepository.findById(tripId)
+                .orElseThrow(()->new RuntimeException(ExceptionMessage.RESOURCE_NOT_FOUND.toString()));
+        if(!trip.getOrganizer().equals(currentUser.getId()))
+            throw new RuntimeException(ExceptionMessage.ACCES_DENIED.toString());
         return trip;
     }
 
@@ -64,4 +100,9 @@ public class TripService {
             return true;
     }
 
+    private void internalEntities(Trip trip){
+        Budget budget=new Budget();
+        budget.setTrip(trip);
+        trip.setBudget(budget);
+    }
 }

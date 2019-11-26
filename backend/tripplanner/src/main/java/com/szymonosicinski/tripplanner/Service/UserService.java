@@ -1,8 +1,8 @@
 package com.szymonosicinski.tripplanner.Service;
 
-import com.szymonosicinski.tripplanner.DTO.User.LoginDTO;
-import com.szymonosicinski.tripplanner.DTO.User.RegistrationDto;
-import com.szymonosicinski.tripplanner.DTO.User.UserDTO;
+import com.szymonosicinski.tripplanner.DTO.UserDTO.LoginDTO;
+import com.szymonosicinski.tripplanner.DTO.UserDTO.RegistrationDTO;
+import com.szymonosicinski.tripplanner.DTO.UserDTO.UserDTO;
 import com.szymonosicinski.tripplanner.Entity.User;
 import com.szymonosicinski.tripplanner.Exception.ExceptionMessage;
 import com.szymonosicinski.tripplanner.Exception.UserException;
@@ -35,7 +35,7 @@ public class UserService{
     @Autowired
     AuthenticationManager authenticationManager;
 
-    public UserDTO register(RegistrationDto registrationDto){
+    public UserDTO register(RegistrationDTO registrationDto){
         if (!userValidation.validateUsername(registrationDto.getSurname()))
             throw new UserException(ExceptionMessage.USERNAME_TAKEN.toString());
         if (!userValidation.validatePassword(registrationDto.getPassword()))

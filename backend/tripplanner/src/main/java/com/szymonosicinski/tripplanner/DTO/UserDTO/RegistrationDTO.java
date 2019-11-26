@@ -1,4 +1,4 @@
-package com.szymonosicinski.tripplanner.DTO.User;
+package com.szymonosicinski.tripplanner.DTO.UserDTO;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +7,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.NotBlank;
 
 @Getter
-public class RegistrationDto {
+public class RegistrationDTO {
 
     @NotBlank
     @Length(max=50)

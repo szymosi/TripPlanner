@@ -24,10 +24,18 @@ public class TripController {
     @Autowired
     private TripService tripService;
 
-    @PutMapping("/create")
+    @PutMapping("/Create")
     public ResponseEntity createTrip(@RequestBody @Valid final TripCreateDTO tripCreateDTO,
                                      @CurrentUser final UserPrincipal currentUser){
         return new ResponseEntity(tripService.create(tripCreateDTO,currentUser), HttpStatus.OK);
+    }
+
+    @PostMapping("/Update")
+    @ResponseBody
+    public ResponseEntity updateTrip(@RequestParam(value="tripId") final UUID tripId,
+                                     @RequestBody @Valid final TripCreateDTO tripCreateDTO,
+                                     @CurrentUser final UserPrincipal currentUser){
+        return new ResponseEntity(tripService.update(tripId, tripCreateDTO, currentUser),HttpStatus.OK);
     }
 
     @GetMapping("/Organizer")

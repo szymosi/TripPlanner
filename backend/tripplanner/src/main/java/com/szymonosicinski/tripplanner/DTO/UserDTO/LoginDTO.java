@@ -1,7 +1,6 @@
-package com.szymonosicinski.tripplanner.DTO.User;
+package com.szymonosicinski.tripplanner.DTO.UserDTO;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 

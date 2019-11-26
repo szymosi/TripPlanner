@@ -21,7 +21,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException{
         final User user=userRepository.findByUsername(username)
-                .orElseThrow(()->new UsernameNotFoundException("User " + username + " does not exist"));
+                .orElseThrow(()->new UsernameNotFoundException("UserDTO " + username + " does not exist"));
         return UserPrincipal.create(user);
     }
 }
