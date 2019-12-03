@@ -25,6 +25,6 @@ public interface TripRepository extends JpaRepository<Trip, UUID> {
     @Query(value = "insert into participants (tripid,userid) values (:tripId, :userId)", nativeQuery = true)
     void saveParticipant(@Param("tripId") UUID tripId, @Param("userId") UUID userId);
 
-    @Query(value="select count(1) from participants p where p.tripid= :tripId and p.userid= :userId", nativeQuery = true)
+    @Query(value="select count(1) from participants p where p.trip= :tripId and p.user= :userId", nativeQuery = true)
     int isParticipant(@Param("tripId") UUID tripId, @Param("userId") UUID userId);
 }

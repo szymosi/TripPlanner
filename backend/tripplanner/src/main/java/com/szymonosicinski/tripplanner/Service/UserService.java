@@ -51,13 +51,13 @@ public class UserService{
         return modelMapper.map(user,UserDTO.class);
     }
 
-    public ResponseEntity authenticate(final LoginDTO loginDTO){
+    public UserDTO authenticate(final LoginDTO loginDTO){
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDTO.getUsername(),loginDTO.getPassword())
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return ResponseEntity.ok(loginDTO.getUsername());
+        return getUser(loginDTO.getUsername());
 
     }
 
@@ -75,7 +75,7 @@ public class UserService{
 
     public UserDTO getCurrentUser(UserPrincipal currentUser){
         if(currentUser==null)
-            throw new RuntimeException(ExceptionMessage.ACCES_DENIED.toString());
+            throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
         UserDTO user=modelMapper.map(currentUser,UserDTO.class);
         return user;
     }

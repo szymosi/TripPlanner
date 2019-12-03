@@ -49,8 +49,8 @@ public class ControlPoint {
     private int order;
 
     @NotNull
+    @JsonIgnore
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="id_trip", referencedColumnName = "id")
-    @JsonIgnore
     private Trip trip;
 }

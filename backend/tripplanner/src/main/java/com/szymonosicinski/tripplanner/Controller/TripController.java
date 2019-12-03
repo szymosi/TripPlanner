@@ -6,6 +6,7 @@ import com.szymonosicinski.tripplanner.Service.TripService;
 import com.szymonosicinski.tripplanner.Util.CurrentUser;
 import com.szymonosicinski.tripplanner.Util.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -40,12 +41,12 @@ public class TripController {
 
     @GetMapping("/Organizer")
     @ResponseBody
-    public List<Trip> getByOrganizer(@CurrentUser final UserPrincipal currentUser,
+    public Page<Trip> getByOrganizer(@CurrentUser final UserPrincipal currentUser,
                                      @RequestParam(value = "page", defaultValue = "0") final int page,
                                      @RequestParam(value = "size", defaultValue = "100") final int pageSize){
-        List<Trip> tripPaged = tripService.getByOrganizer(currentUser,
-                PageRequest.of(page,pageSize, Sort.Direction.ASC,"id")).toList();
-        return tripPaged;
+
+        return tripService.getByOrganizer(currentUser,
+                PageRequest.of(page,pageSize, Sort.Direction.ASC,"id"));
     }
 
     @GetMapping("/Participant")

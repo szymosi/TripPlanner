@@ -26,7 +26,7 @@ public class BudgetController {
         return new ResponseEntity(budgetService.getByTripId(tripId,currentUser), HttpStatus.OK);
     }
 
-    @PostMapping("/Update")
+    @PostMapping("/BudgetUpdate")
     public ResponseEntity update(@RequestParam(value = "founds", defaultValue = "0") final int founds,
                                  @PathVariable("tripId") final UUID tripId,
                                  @CurrentUser final UserPrincipal currentUser){
@@ -37,7 +37,7 @@ public class BudgetController {
     public ResponseEntity addExpense(@RequestBody @Valid final ExpenseDTO expenseDTO,
                                      @PathVariable("tripId") final UUID tripId,
                                      @CurrentUser final UserPrincipal currentUser){
-        return new ResponseEntity(budgetService.addExpense(expenseDTO,tripId,currentUser),HttpStatus.OK);
+        return new ResponseEntity(budgetService.addExpense(expenseDTO,tripId,currentUser),HttpStatus.CREATED);
     }
 
     @DeleteMapping("/ExpenseDelete")

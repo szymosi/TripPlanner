@@ -6,7 +6,8 @@ public enum ExceptionMessage {
     PASSWORDS_NOT_MATCH("Passwords are not the same"),
     USER_NOT_EXIST("UserDTO does not exist"),
     RESOURCE_NOT_FOUND("Resource does not exist"),
-    ACCES_DENIED("Permision not granted for operation");
+    ACCESS_DENIED("Permision not granted for operation"),
+    INPUT_ERROR("Wrong input data");
 
     private final String exceptionMessage;
 

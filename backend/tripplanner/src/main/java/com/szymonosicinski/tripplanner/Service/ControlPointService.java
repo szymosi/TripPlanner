@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -30,21 +29,64 @@ public class ControlPointService {
 
     public ControlPoint addControlPoint(CreateControlPointDTO createControlPointDTO, UUID tripId, UserPrincipal currentUser){
         if (currentUser == null)
-            throw new RuntimeException(ExceptionMessage.ACCES_DENIED.toString());
+            throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
         Trip trip=tripService.getByIdAsOrganizer(tripId,currentUser);
         ControlPoint controlPoint=controlPointConverter(createControlPointDTO);
-        controlPoint.setOrder(0/*trip.getControlPoints().size()*/);
+        controlPoint.setOrder(trip.getControlPoints().size());
         controlPoint.setTrip(trip);
-        //trip.getControlPoints().add(controlPoint);
+        trip.getControlPoints().add(controlPoint);
         controlPointRepository.save(controlPoint);
         return controlPoint;
     }
 
     public List<ControlPoint> getControlPoints(UUID tripId, UserPrincipal currentUser){
         if (currentUser == null)
-            throw new RuntimeException(ExceptionMessage.ACCES_DENIED.toString());
+            throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
         tripService.getById(tripId, currentUser);
-        return controlPointRepository.findAllByTrip_Id(tripId);
+        List<ControlPoint> controlPoints = controlPointRepository.findAllByTrip_IdOrderByOrderAsc(tripId);
+        return controlPointRepository.findAllByTrip_IdOrderByOrderAsc(tripId);
+    }
+
+    public ControlPoint removeControlPoint(UUID tripId, UUID controlPointId, UserPrincipal currentUser){
+        if (currentUser == null)
+            throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
+        Trip trip = tripService.getByIdAsOrganizer(tripId,currentUser);
+        ControlPoint controlPoint = controlPointRepository.getOne(controlPointId);
+        trip.getControlPoints().remove(controlPoint);
+        controlPointRepository.delete(controlPoint);
+        return controlPoint;
+    }
+
+    public List<ControlPoint> changeOrder(UUID tripId, UUID controlPointId, int newPosition, UserPrincipal currentUser){
+        if (currentUser == null)
+            throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
+        Trip trip = tripService.getByIdAsOrganizer(tripId,currentUser);
+        List<ControlPoint> controlPoints = trip.getControlPoints();
+        if(newPosition<0 || newPosition>controlPoints.size())
+            throw new RuntimeException(ExceptionMessage.INPUT_ERROR.toString());
+
+        ControlPoint controlPoint=controlPointRepository.getOne(controlPointId);
+
+
+        //change order of neighborhood points
+        for (ControlPoint point: controlPoints) {
+            if(controlPoint.getOrder()<newPosition)
+                if(point.getOrder()>controlPoint.getOrder() && point.getOrder()<=newPosition) {
+                    point.setOrder(point.getOrder()-1);
+                    controlPointRepository.save(point);
+                }
+            if(controlPoint.getOrder()>newPosition)
+                if(point.getOrder()<controlPoint.getOrder() && point.getOrder()>=newPosition) {
+                    point.setOrder(point.getOrder()+1);
+                    controlPointRepository.save(point);
+                }
+        }
+        controlPoint.setOrder(newPosition);
+        controlPointRepository.save(controlPoint);
+
+        controlPoints = controlPointRepository.findAllByTrip_IdOrderByOrderAsc(tripId);
+        trip.setControlPoints(controlPoints);
+        return controlPoints;
     }
 
     private ControlPoint controlPointConverter(CreateControlPointDTO createControlPointDTO){

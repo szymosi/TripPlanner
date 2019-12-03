@@ -10,10 +10,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 @Setter
@@ -58,9 +55,9 @@ public class Trip {
     @JsonIgnore
     private Blog blog;*/
 
-   /* @OneToMany(mappedBy = "trip", fetch = FetchType.LAZY, targetEntity = ControlPoint.class)
+    @OneToMany(mappedBy = "trip", fetch = FetchType.LAZY, targetEntity = ControlPoint.class)
     @JsonIgnore
-    private Set<ControlPoint> controlPoints=new HashSet<>();*/
+    private List<ControlPoint> controlPoints=new ArrayList<>();
 
    /* @OneToMany(mappedBy = "trip", fetch = FetchType.LAZY, targetEntity = Task.class)
     @JsonIgnore

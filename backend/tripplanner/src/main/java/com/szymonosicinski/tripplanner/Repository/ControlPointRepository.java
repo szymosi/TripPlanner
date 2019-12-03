@@ -9,5 +9,5 @@ import java.util.UUID;
 
 @Repository
 public interface ControlPointRepository  extends JpaRepository<ControlPoint, UUID> {
-    List<ControlPoint> findAllByTrip_Id(UUID tripId);
+    List<ControlPoint> findAllByTrip_IdOrderByOrderAsc(UUID tripId);
 }
