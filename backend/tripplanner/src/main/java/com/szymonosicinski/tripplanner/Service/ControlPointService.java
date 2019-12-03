@@ -29,7 +29,7 @@ public class ControlPointService {
 
     public ControlPoint addControlPoint(CreateControlPointDTO createControlPointDTO, UUID tripId, UserPrincipal currentUser){
         if (currentUser == null)
-            throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
+            throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
         Trip trip=tripService.getByIdAsOrganizer(tripId,currentUser);
         ControlPoint controlPoint=controlPointConverter(createControlPointDTO);
         controlPoint.setOrder(trip.getControlPoints().size());
@@ -41,7 +41,7 @@ public class ControlPointService {
 
     public List<ControlPoint> getControlPoints(UUID tripId, UserPrincipal currentUser){
         if (currentUser == null)
-            throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
+            throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
         tripService.getById(tripId, currentUser);
         List<ControlPoint> controlPoints = controlPointRepository.findAllByTrip_IdOrderByOrderAsc(tripId);
         return controlPointRepository.findAllByTrip_IdOrderByOrderAsc(tripId);
@@ -49,7 +49,7 @@ public class ControlPointService {
 
     public ControlPoint removeControlPoint(UUID tripId, UUID controlPointId, UserPrincipal currentUser){
         if (currentUser == null)
-            throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
+            throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
         Trip trip = tripService.getByIdAsOrganizer(tripId,currentUser);
         ControlPoint controlPoint = controlPointRepository.getOne(controlPointId);
         trip.getControlPoints().remove(controlPoint);
@@ -59,7 +59,7 @@ public class ControlPointService {
 
     public List<ControlPoint> changeOrder(UUID tripId, UUID controlPointId, int newPosition, UserPrincipal currentUser){
         if (currentUser == null)
-            throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
+            throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
         Trip trip = tripService.getByIdAsOrganizer(tripId,currentUser);
         List<ControlPoint> controlPoints = trip.getControlPoints();
         if(newPosition<0 || newPosition>controlPoints.size())

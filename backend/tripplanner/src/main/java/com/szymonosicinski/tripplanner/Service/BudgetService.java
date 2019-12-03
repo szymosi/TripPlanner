@@ -30,14 +30,14 @@ public class BudgetService {
 
     public Budget getByTripId(UUID tripId, UserPrincipal currentUser){
         if(currentUser==null)
-            throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
+            throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
         Trip trip=tripService.getById(tripId, currentUser);
         return trip.getBudget();
     }
 
     public Budget update(float founds, UUID tripId, UserPrincipal currentUser){
         if(currentUser==null)
-            throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
+            throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
         Budget budget=tripService.getByIdAsOrganizer(tripId,currentUser).getBudget();
         budget.setFounds(founds);
         budgetRepository.save(budget);
@@ -46,7 +46,7 @@ public class BudgetService {
 
     public Expense addExpense(ExpenseDTO expenseDTO, UUID tripId, UserPrincipal currentUser) {
         if (currentUser == null)
-            throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
+            throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
         Budget budget = tripService.getByIdAsOrganizer(tripId, currentUser).getBudget();
         Expense expense=modelMapper.map(expenseDTO, Expense.class);
         expense.setBudget(budget);
@@ -56,7 +56,7 @@ public class BudgetService {
 
     public Expense getExpenseAsOrganizer(UUID expenseId, UUID tripId, UserPrincipal currentUser){
         if (currentUser == null)
-            throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
+            throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
         Budget budget = tripService.getByIdAsOrganizer(tripId, currentUser).getBudget();
         Expense expense=expenseRepository.findById(expenseId)
                 .orElseThrow(()->new RuntimeException(ExceptionMessage.RESOURCE_NOT_FOUND.toString()));

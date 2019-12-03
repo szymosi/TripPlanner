@@ -30,21 +30,21 @@ public class TaskService {
 
     public List<Task> getTasks(UUID tripId, UserPrincipal currentUser){
         if(currentUser==null)
-            throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
+            throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
         Trip trip=tripService.getById(tripId, currentUser);
         return taskRepository.findAllByTrip_IdOrderByDeadlineAsc(tripId);
     }
 
     public Task getTaskById(UUID tripId, UUID taskId, UserPrincipal currentUser){
         if(currentUser==null)
-            throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
+            throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
         Trip trip=tripService.getById(tripId, currentUser);
         return taskRepository.getOne(taskId);
     }
 
     public Task addTask(UUID tripId, CreateTaskDTO createTaskDTO, UserPrincipal currentUser){
         if(currentUser==null)
-            throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
+            throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
         User user=userRepository.findById(createTaskDTO.getUser())
                 .orElseThrow(()->new UserException(ExceptionMessage.USER_NOT_EXIST.toString()));
         Trip trip=tripService.getByIdAsOrganizer(tripId, currentUser);
@@ -59,7 +59,7 @@ public class TaskService {
 
     public Task updateTask(UUID tripId, UUID taskID, CreateTaskDTO createTaskDTO, UserPrincipal currentUser){
         if(currentUser==null)
-            throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
+            throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
         Trip trip=tripService.getByIdAsOrganizer(tripId, currentUser);
         Task task=taskRepository.getOne(taskID);
         modelMapper.map(createTaskDTO,task);
@@ -69,7 +69,7 @@ public class TaskService {
 
     public Task deleteTask(UUID tripId, UUID taskID, UserPrincipal currentUser){
         if(currentUser==null)
-            throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
+            throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
         Trip trip=tripService.getByIdAsOrganizer(tripId, currentUser);
         Task task=taskRepository.getOne(taskID);
         taskRepository.delete(task);
@@ -78,7 +78,7 @@ public class TaskService {
 
     public Task changeStatus(UUID tripId, UUID taskID, boolean status, UserPrincipal currentUser){
         if(currentUser==null)
-            throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
+            throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
         Trip trip=tripService.getById(tripId, currentUser);
         Task task=taskRepository.findById(taskID)
                 .orElseThrow(()->new RuntimeException(ExceptionMessage.INPUT_ERROR.toString()));

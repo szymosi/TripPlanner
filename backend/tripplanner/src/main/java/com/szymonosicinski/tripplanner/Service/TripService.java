@@ -26,7 +26,7 @@ public class TripService {
 
     public Trip create(TripCreateDTO tripCreateDTO, UserPrincipal currentUser){
         if(currentUser==null)
-            throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
+            throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
         Trip trip =modelMapper.map(tripCreateDTO,Trip.class);
         trip.setOrganizer(currentUser.getId());
         internalEntities(trip);
@@ -36,7 +36,7 @@ public class TripService {
 
     public Trip update(UUID tripId, TripCreateDTO tripCreateDTO, UserPrincipal currentUser){
         if(currentUser==null)
-            throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
+            throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
         Trip trip=tripRepository.findById(tripId)
                 .orElseThrow(()->new RuntimeException(ExceptionMessage.RESOURCE_NOT_FOUND.toString()));
         if(!trip.getOrganizer().equals(currentUser.getId()))
@@ -48,7 +48,7 @@ public class TripService {
 
     public Trip getById(UUID tripId, UserPrincipal currentUser){
         if(currentUser==null)
-            throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
+            throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
         Trip trip=tripRepository.findById(tripId)
                 .orElseThrow(()->new RuntimeException(ExceptionMessage.RESOURCE_NOT_FOUND.toString()));
         if(!(trip.getOrganizer().equals(currentUser.getId())||
@@ -59,7 +59,7 @@ public class TripService {
 
     public Trip getByIdAsOrganizer(UUID tripId, UserPrincipal currentUser){
         if(currentUser==null)
-            throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
+            throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
         Trip trip=tripRepository.findById(tripId)
                 .orElseThrow(()->new RuntimeException(ExceptionMessage.RESOURCE_NOT_FOUND.toString()));
         if(!trip.getOrganizer().equals(currentUser.getId()))
@@ -69,19 +69,19 @@ public class TripService {
 
     public Page<Trip> getByOrganizer(UserPrincipal currentUser, Pageable pageable){
         if(currentUser==null)
-            throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
+            throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
         return tripRepository.findAllByOrganizer(currentUser.getId(),pageable);
     }
 
     public List<Trip> getByParticipant(UserPrincipal currentUser, Pageable pageable){
         if(currentUser==null)
-            throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
+            throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
         return tripRepository.findAllByParticipant(currentUser.getId());
     }
 
     public void addParticipant(UUID tripId, UUID participantId, UserPrincipal currentUser){
         if(currentUser==null)
-            throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
+            throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
         Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(()->new RuntimeException(ExceptionMessage.RESOURCE_NOT_FOUND.toString()));
         if(!trip.getOrganizer().equals(currentUser.getId()))
@@ -92,7 +92,7 @@ public class TripService {
 
     public boolean isParticipant(UUID tripId, UserPrincipal currentUser){
         if(currentUser==null)
-            throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
+            throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
         if(tripRepository.isParticipant(tripId, currentUser.getId())==0)
             return false;
         else
@@ -101,7 +101,7 @@ public class TripService {
 
     public boolean isParticipant(UUID tripId, User user){
         if(user==null)
-            throw new RuntimeException(ExceptionMessage.INPUT_ERROR.toString());
+            throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
         if(tripRepository.isParticipant(tripId, user.getId())==0)
             return false;
         else

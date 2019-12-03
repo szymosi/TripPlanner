@@ -75,7 +75,7 @@ public class UserService{
 
     public UserDTO getCurrentUser(UserPrincipal currentUser){
         if(currentUser==null)
-            throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
+            throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
         UserDTO user=modelMapper.map(currentUser,UserDTO.class);
         return user;
     }
