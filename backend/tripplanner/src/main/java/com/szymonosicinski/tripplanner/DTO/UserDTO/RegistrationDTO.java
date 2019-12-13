@@ -10,12 +10,12 @@ import javax.validation.constraints.NotBlank;
 public class RegistrationDTO {
 
     @NotBlank
-    @Length(max=50)
+    @Length(min=4, max=50)
     private String username;
 
     @Setter
     @NotBlank
-    @Length(min=8,max=60)
+    @Length(min=8,max=50)
     private String password;
 
     @NotBlank

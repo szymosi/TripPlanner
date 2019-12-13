@@ -8,6 +8,8 @@ import com.szymonosicinski.tripplanner.Repository.ControlPointRepository;
 import com.szymonosicinski.tripplanner.Util.UserPrincipal;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,12 +41,11 @@ public class ControlPointService {
         return controlPoint;
     }
 
-    public List<ControlPoint> getControlPoints(UUID tripId, UserPrincipal currentUser){
+    public Page<ControlPoint> getControlPoints(UUID tripId, UserPrincipal currentUser, Pageable pageable){
         if (currentUser == null)
             throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
         tripService.getById(tripId, currentUser);
-        List<ControlPoint> controlPoints = controlPointRepository.findAllByTrip_IdOrderByOrderAsc(tripId);
-        return controlPointRepository.findAllByTrip_IdOrderByOrderAsc(tripId);
+        return controlPointRepository.findAllByTrip_IdOrderByOrderAsc(tripId, pageable);
     }
 
     public ControlPoint removeControlPoint(UUID tripId, UUID controlPointId, UserPrincipal currentUser){
@@ -57,7 +58,7 @@ public class ControlPointService {
         return controlPoint;
     }
 
-    public List<ControlPoint> changeOrder(UUID tripId, UUID controlPointId, int newPosition, UserPrincipal currentUser){
+    public Page<ControlPoint> changeOrder(UUID tripId, UUID controlPointId, int newPosition, UserPrincipal currentUser, Pageable pageable){
         if (currentUser == null)
             throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
         Trip trip = tripService.getByIdAsOrganizer(tripId,currentUser);
@@ -86,7 +87,7 @@ public class ControlPointService {
 
         controlPoints = controlPointRepository.findAllByTrip_IdOrderByOrderAsc(tripId);
         trip.setControlPoints(controlPoints);
-        return controlPoints;
+        return controlPointRepository.findAllByTrip_IdOrderByOrderAsc(tripId, pageable);
     }
 
     private ControlPoint controlPointConverter(CreateControlPointDTO createControlPointDTO){

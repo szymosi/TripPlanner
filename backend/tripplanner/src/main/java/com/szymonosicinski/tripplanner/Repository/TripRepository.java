@@ -19,8 +19,8 @@ public interface TripRepository extends JpaRepository<Trip, UUID> {
 
     Page<Trip> findAllByOrganizer(UUID organizerId, Pageable pageable);
 
-    @Query(value = "select * from trip t inner join participants p on t.id=p.tripid where p.userid= :userId", nativeQuery = true)
-    List<Trip> findAllByParticipant(@Param("userId") UUID userId);
+    @Query(value = "select * from trip t inner join participants p on t.id=p.trip where p.user= :userId", nativeQuery = true)
+    Page<Trip> findAllByParticipant(@Param("userId") UUID userId, Pageable pageable);
 
     @Query(value = "insert into participants (tripid,userid) values (:tripId, :userId)", nativeQuery = true)
     void saveParticipant(@Param("tripId") UUID tripId, @Param("userId") UUID userId);

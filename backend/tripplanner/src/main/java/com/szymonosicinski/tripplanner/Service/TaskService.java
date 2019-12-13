@@ -11,6 +11,8 @@ import com.szymonosicinski.tripplanner.Repository.UserRepository;
 import com.szymonosicinski.tripplanner.Util.UserPrincipal;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -28,11 +30,11 @@ public class TaskService {
     @Autowired
     UserRepository userRepository;
 
-    public List<Task> getTasks(UUID tripId, UserPrincipal currentUser){
+    public Page<Task> getTasks(UUID tripId, UserPrincipal currentUser, Pageable pageable){
         if(currentUser==null)
             throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
         Trip trip=tripService.getById(tripId, currentUser);
-        return taskRepository.findAllByTrip_IdOrderByDeadlineAsc(tripId);
+        return taskRepository.findAllByTrip_IdOrderByDeadlineAsc(tripId, pageable);
     }
 
     public Task getTaskById(UUID tripId, UUID taskId, UserPrincipal currentUser){

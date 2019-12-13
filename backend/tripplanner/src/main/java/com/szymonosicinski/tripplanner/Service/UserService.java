@@ -36,7 +36,7 @@ public class UserService{
     AuthenticationManager authenticationManager;
 
     public UserDTO register(RegistrationDTO registrationDto){
-        if (!userValidation.validateUsername(registrationDto.getSurname()))
+        if (!userValidation.validateUsername(registrationDto.getUsername()))
             throw new UserException(ExceptionMessage.USERNAME_TAKEN.toString());
         if (!userValidation.validatePassword(registrationDto.getPassword()))
             throw new UserException(ExceptionMessage.PASSWORD_NOT_VALID.toString());

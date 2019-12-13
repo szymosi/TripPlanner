@@ -4,6 +4,7 @@ import lombok.Getter;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
+import java.util.UUID;
 
 @Getter
 public class ExpenseDTO {
@@ -15,6 +16,6 @@ public class ExpenseDTO {
     @NotNull
     private float cost;
 
-
-    private float actuualCost;
+    @NotNull
+    private UUID parentExpense;
 }

@@ -51,7 +51,7 @@ public class TripController {
 
     @GetMapping("/Participant")
     @ResponseBody
-    public List<Trip> getByParticipant(@CurrentUser final UserPrincipal currentUser,
+    public Page<Trip> getByParticipant(@CurrentUser final UserPrincipal currentUser,
                                      @RequestParam(value = "page", defaultValue = "0") final int page,
                                      @RequestParam(value = "size", defaultValue = "100") final int pageSize){
         return tripService.getByParticipant(currentUser,
