@@ -7,6 +7,9 @@ import com.szymonosicinski.tripplanner.Util.CurrentUser;
 import com.szymonosicinski.tripplanner.Util.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -30,9 +33,12 @@ public class ControlPointController {
     }
 
     @GetMapping()
-    public List<ControlPoint> getControlPoints(@PathVariable("tripId") final UUID tripId,
-                                               @CurrentUser final UserPrincipal currentUser){
-        return controlPointService.getControlPoints(tripId, currentUser);
+    public Page<ControlPoint> getControlPoints(@PathVariable("tripId") final UUID tripId,
+                                               @CurrentUser final UserPrincipal currentUser,
+                                               @RequestParam(value = "page", defaultValue = "0") final int page,
+                                               @RequestParam(value = "size", defaultValue = "100") final int pageSize){
+        return controlPointService.getControlPoints(tripId, currentUser ,
+                PageRequest.of(page,pageSize, Sort.Direction.ASC,"id"));
     }
 
     @DeleteMapping("/ControlPointDelete")
@@ -43,10 +49,13 @@ public class ControlPointController {
     }
 
     @PostMapping("/ChangeOrder")
-    public List<ControlPoint> changeOrder(@RequestParam(value = "controlPointId", defaultValue = "0") final UUID controlPointId,
+    public Page<ControlPoint> changeOrder(@RequestParam(value = "controlPointId", defaultValue = "0") final UUID controlPointId,
                                           @RequestParam(value = "newPosition", defaultValue = "0") final int newPosition ,
                                           @PathVariable("tripId") final UUID tripId,
-                                          @CurrentUser final UserPrincipal currentUser){
-        return controlPointService.changeOrder(tripId,controlPointId, newPosition,currentUser);
+                                          @CurrentUser final UserPrincipal currentUser,
+                                          @RequestParam(value = "page", defaultValue = "0") final int page,
+                                          @RequestParam(value = "size", defaultValue = "100") final int pageSize){
+        return controlPointService.changeOrder(tripId,controlPointId, newPosition,currentUser,
+                PageRequest.of(page,pageSize, Sort.Direction.ASC,"id"));
     }
 }

@@ -7,6 +7,9 @@ import com.szymonosicinski.tripplanner.Util.CurrentUser;
 import com.szymonosicinski.tripplanner.Util.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -23,9 +26,12 @@ public class TaskController {
     TaskService taskService;
 
     @GetMapping()
-    public List<Task> getTasks(@PathVariable("tripId") final UUID tripId,
-                               @CurrentUser final UserPrincipal currentUser){
-        return taskService.getTasks(tripId,currentUser);
+    public Page<Task> getTasks(@PathVariable("tripId") final UUID tripId,
+                               @CurrentUser final UserPrincipal currentUser,
+                               @RequestParam(value = "page", defaultValue = "0") final int page,
+                               @RequestParam(value = "size", defaultValue = "100") final int pageSize){
+        return taskService.getTasks(tripId,currentUser,
+                PageRequest.of(page,pageSize, Sort.Direction.ASC,"deadline"));
     }
 
     @GetMapping("/{taskId}")
