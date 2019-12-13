@@ -60,7 +60,7 @@ public class BudgetService {
         Budget budget = tripService.getByIdAsOrganizer(tripId, currentUser).getBudget();
         Expense expense=expenseRepository.findById(expenseId)
                 .orElseThrow(()->new RuntimeException(ExceptionMessage.RESOURCE_NOT_FOUND.toString()));
-        if(!budget.getExpenses().contains(expense))
+        if(expense.getBudget().equals(budget))
             throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
         return expense;
     }

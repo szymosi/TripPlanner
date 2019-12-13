@@ -47,19 +47,20 @@ public class Trip {
     @org.hibernate.annotations.Type(type = "pg-uuid")
     private UUID organizer;
 
-    @OneToOne(mappedBy = "trip",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @NotNull
+    @OneToOne(mappedBy = "trip",cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Budget.class)
     @JsonIgnore
     private Budget budget;
 
- /*   @OneToOne(mappedBy = "trip", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "trip", fetch = FetchType.LAZY)
     @JsonIgnore
-    private Blog blog;*/
+    private Blog blog;
 
     @OneToMany(mappedBy = "trip", fetch = FetchType.LAZY, targetEntity = ControlPoint.class)
     @JsonIgnore
     private List<ControlPoint> controlPoints=new ArrayList<>();
 
-   /* @OneToMany(mappedBy = "trip", fetch = FetchType.LAZY, targetEntity = Task.class)
+    @OneToMany(mappedBy = "trip", fetch = FetchType.LAZY, targetEntity = Task.class)
     @JsonIgnore
-    private Set<Task> tasks=new HashSet<>();*/
+    private Set<Task> tasks=new HashSet<>();
 }

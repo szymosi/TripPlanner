@@ -26,11 +26,13 @@ public class Budget {
     private float founds;
 
     @NotNull
-    @OneToOne(fetch=FetchType.LAZY,cascade = CascadeType.PERSIST)
+    @OneToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="id_trip", referencedColumnName = "id")
     @JsonIgnore
     private Trip trip;
 
-    @OneToMany(fetch=FetchType.EAGER, mappedBy = "budget", targetEntity = Expense.class)
-    private Set<Expense> expenses=new HashSet<>();
+    @NotNull
+    @OneToOne(fetch = FetchType.EAGER,  cascade = CascadeType.ALL)
+    @JoinColumn(name="id_expense", referencedColumnName = "id")
+    private Expense expense;
 }

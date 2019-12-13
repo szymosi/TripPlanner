@@ -2,6 +2,7 @@ package com.szymonosicinski.tripplanner.Service;
 
 import com.szymonosicinski.tripplanner.DTO.TripDTO.TripCreateDTO;
 import com.szymonosicinski.tripplanner.Entity.Budget;
+import com.szymonosicinski.tripplanner.Entity.Expense;
 import com.szymonosicinski.tripplanner.Entity.Trip;
 import com.szymonosicinski.tripplanner.Entity.User;
 import com.szymonosicinski.tripplanner.Exception.ExceptionMessage;
@@ -73,10 +74,10 @@ public class TripService {
         return tripRepository.findAllByOrganizer(currentUser.getId(),pageable);
     }
 
-    public List<Trip> getByParticipant(UserPrincipal currentUser, Pageable pageable){
+    public Page<Trip> getByParticipant(UserPrincipal currentUser, Pageable pageable){
         if(currentUser==null)
             throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
-        return tripRepository.findAllByParticipant(currentUser.getId());
+        return tripRepository.findAllByParticipant(currentUser.getId(), pageable);
     }
 
     public void addParticipant(UUID tripId, UUID participantId, UserPrincipal currentUser){
@@ -112,5 +113,10 @@ public class TripService {
         Budget budget=new Budget();
         budget.setTrip(trip);
         trip.setBudget(budget);
+
+        Expense expense=new Expense();
+        expense.setName("sum");
+        expense.setBudget(budget);
+        budget.setExpense(expense);
     }
 }
