@@ -1,20 +1,23 @@
+import Vue from 'vue';
+import Vuex from 'vuex';
+
+Vue.use(Vuex);
+
 export default new Vuex.Store({
     state:{
-     // Current state of the application lies here.
-     user:{
-        id: null,
-        username: null,
-        name: null,
-        surname: null
-     },
+     user: 'default'
     },
     getters:{
-     // Compute derived state based on the current state. More like computed property.
+        user: state=>state.user
+
     },
     mutations:{
-     // Mutate the current state
+        setUser(state){
+            state.user='123456789'
+        }
+
     },
     actions:{
-     // Get data from server and send that to mutations to mutate the current state
+
     }
    })

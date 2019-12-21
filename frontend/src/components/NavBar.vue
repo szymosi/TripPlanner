@@ -3,6 +3,8 @@
   <b-navbar toggleable="sm" type="dark"  style="background-color: #687864;">
     <b-navbar-brand href="#">Trip Planner</b-navbar-brand>
 
+    <p>{{this.$store.getters.user}}</p>
+
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
     <b-collapse id="nav-collapse" is-nav>
@@ -24,7 +26,6 @@
 <script>
 import Login from '@/components/Login'
 import Register from '@/components/Register'
-//import Vue from 'vue'
 export default {
     components: {
     Login, Register
@@ -32,10 +33,14 @@ export default {
   methods:{
     Registered(){
       this.$root.$emit('bv::hide::popover')
+    },
+    LoggedIn(){
+      this.$root.$emit('bv::hide::popover')
     }
   },
   created(){
     this.$eventHub.$on('Registered', this.Registered);
+    this.$eventHub.$on('Loggedin', this.LoggedIn);
   }
 }
 </script>

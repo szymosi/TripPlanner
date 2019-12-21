@@ -26,6 +26,7 @@
           <label>Surname</label>
           <b-input v-model="surname"></b-input>
 
+          <label>{{message}}</label>
           <ul></ul>
           <b-button @click="register" block style="background-color: #687864;">Register</b-button>
 
@@ -43,6 +44,7 @@ export default {
         passwordRepeat: '',
         name: '',
         surname: '',
+        message: ''
         };
     },
     computed:{
@@ -52,13 +54,36 @@ export default {
     },
     methods:{
         register: function(){
-            this.$eventHub.$emit('Registered');
-        return axios.put('http://192.168.1.166:8181/User/Registration',{
+          this.$eventHub.$emit('Registered');
+
+          axios.put('http://localhost:8181/User/Registration',{
           username: this.login,
           password: this.password,
           passwordRepeat: this.passwordRepeat,
           name: this.name,
           surname: this.surname
+          
+          }).then(response => {
+            
+            this.message="";
+            this.$eventHub.$emit('Registered');
+            
+            this.$toasted.show('User '+response.data.username+' created', { 
+            theme: "outline", 
+            position: "top-right", 
+            duration : 1000
+            })
+          })
+          .catch(error=>{
+              if(error.response){
+                  this.message=error.response.data.message
+              }
+              else if(error.request){
+                  this.message=error.request
+              }
+              else {
+                  this.message=error
+              }
           })
         }
     }
