@@ -2,7 +2,7 @@
   <div id="app">
     <div id="nav">
     </div>
-    <router-view/>
+    <router-view style="height: 100%"></router-view>
   </div>
 </template>
 

@@ -9,7 +9,7 @@
 <script>
 import NavBar from '@/components/NavBar'
 import NavBarLog from '@/components/NavBarLog'
-import App from '@/views/App'
+import App from '@/views/TripApp'
 import axios from 'axios';
 
 export default {
@@ -28,7 +28,8 @@ export default {
       .catch(error=>{
           if(error.response){
             this.$store.commit('setUserDetails', null);
-              this.message=error.response.data.message
+            this.$router.push({path:''});
+            this.message=error.response.data.message
           }
           else if(error.request){
               this.message=error.request

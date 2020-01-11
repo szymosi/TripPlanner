@@ -15,39 +15,46 @@
 
 <script>
 import axios from 'axios';
-import {mapMutations} from 'vuex';
 export default {
     data: function(){
         return{
         login: '',
         password: '',
+        message: ''
         };
     },
     methods:{
-        ...mapMutations(['setUserDetails']),
         loginFunc: function(){
-          this.setUserDetails();
-          //this.$store.commit('setUser');
 
-          return axios.post('http://localhost:8181/User/Login',{
+          axios.post('http://localhost:8181/User/Login',{
           username: this.login,
           password: this.password
           }).then(response => {
-            this.$eventHub.$emit('Loggedin');
-
-            this.$toasted.show('User '+response.data.username+' logged in', { 
+            this.message="";
+            this.$eventHub.$emit('Loggedin',response.data);
+            
+            this.$toasted.show('User logged in', { 
             theme: "outline", 
             position: "top-right", 
             duration : 1000
           })
           })
           .catch(error=>{
-            this.$toasted.show(error.response.data.message, { 
+              if(error.response){
+                  this.message=error.response.data.message
+              }
+              else if(error.request){
+                  this.message=error.request
+              }
+              else {
+                  this.message=error
+              }
+            this.$toasted.show(this.message, { 
             theme: "outline", 
             position: "top-right", 
             duration : 1000
           })
-          })
+          }) 
         }
     }
 }

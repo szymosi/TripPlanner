@@ -2,11 +2,7 @@
 <div>
   <b-navbar toggleable="sm" type="dark"  style="background-color: #687864;">
     <b-navbar-brand href="#">Trip Planner</b-navbar-brand>
-
-    <p>{{this.$store.getters.user}}</p>
-
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav class="ml-auto">
         <b-nav-item id="LoginButton">Login</b-nav-item>
@@ -26,21 +22,50 @@
 <script>
 import Login from '@/components/Login'
 import Register from '@/components/Register'
+import axios from 'axios';
 export default {
     components: {
     Login, Register
   },
   methods:{
     Registered(){
-      this.$root.$emit('bv::hide::popover')
     },
-    LoggedIn(){
-      this.$root.$emit('bv::hide::popover')
-    }
   },
   created(){
-    this.$eventHub.$on('Registered', this.Registered);
-    this.$eventHub.$on('Loggedin', this.LoggedIn);
+    this.$eventHub.$on('Registered', 
+      this.$root.$emit('bv::hide::popover')
+      );
+    this.$eventHub.$on('Loggedin', token =>{
+      this.$root.$emit('bv::hide::popover');
+      
+      this.$store.commit('setToken', token);
+
+      axios.get('http://localhost:8181/User/CurrentUser',{
+        params:{},
+        headers:{
+          Authorization: 'Bearer:'+this.$store.getters.token
+        }
+      }).then(response => {
+        this.$store.commit('setUserDetails', response.data);
+      })
+      .catch(error=>{
+          if(error.response){
+            this.$store.commit('setUserDetails', null);
+              this.message=error.response.data.message
+          }
+          else if(error.request){
+              this.message=error.request
+          }
+          else {
+              this.message=error
+          }
+        this.$toasted.show(this.message, { 
+        theme: "outline", 
+        position: "top-right", 
+        duration : 1000
+      })
+      })
+    });
   }
 }
 </script>
