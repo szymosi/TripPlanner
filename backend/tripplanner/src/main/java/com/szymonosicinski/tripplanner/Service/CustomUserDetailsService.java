@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.UUID;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -21,7 +22,14 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException{
         final User user=userRepository.findByUsername(username)
-                .orElseThrow(()->new UsernameNotFoundException("UserDTO " + username + " does not exist"));
+                .orElseThrow(()->new UsernameNotFoundException("User " + username + " does not exist"));
+        return UserPrincipal.create(user);
+    }
+
+    @Transactional
+    public UserDetails loadUserById(final UUID id) throws UsernameNotFoundException{
+        final User user=userRepository.findById(id)
+                .orElseThrow(()->new UsernameNotFoundException("User " + id + " does not exist"));
         return UserPrincipal.create(user);
     }
 }

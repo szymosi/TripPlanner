@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.UUID;
 
-@Controller
+@RestController
 @RequestMapping("/User")
 public class UserController {
 

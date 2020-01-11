@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.UUID;
 
-@Controller
+@RestController
 @RequestMapping("/{tripId}/Budget")
 public class BudgetController {
     @Autowired

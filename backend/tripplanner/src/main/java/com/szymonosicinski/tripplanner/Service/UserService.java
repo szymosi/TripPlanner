@@ -7,6 +7,7 @@ import com.szymonosicinski.tripplanner.Entity.User;
 import com.szymonosicinski.tripplanner.Exception.ExceptionMessage;
 import com.szymonosicinski.tripplanner.Exception.UserException;
 import com.szymonosicinski.tripplanner.Repository.UserRepository;
+import com.szymonosicinski.tripplanner.Util.JwtProvider;
 import com.szymonosicinski.tripplanner.Util.UserPrincipal;
 import com.szymonosicinski.tripplanner.Util.UserValidation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,8 @@ public class UserService{
     PasswordEncoder passwordEncoder;
     @Autowired
     AuthenticationManager authenticationManager;
+    @Autowired
+    JwtProvider jwtProvider;
 
     public UserDTO register(RegistrationDTO registrationDto){
         if (!userValidation.validateUsername(registrationDto.getUsername()))
@@ -51,14 +54,13 @@ public class UserService{
         return modelMapper.map(user,UserDTO.class);
     }
 
-    public UserDTO authenticate(final LoginDTO loginDTO){
+    public String authenticate(final LoginDTO loginDTO){
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDTO.getUsername(),loginDTO.getPassword())
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        return getUser(loginDTO.getUsername());
-
+        String jwt = jwtProvider.generateToken(authentication);
+        return jwt;
     }
 
     public UserDTO getUser(String username){
