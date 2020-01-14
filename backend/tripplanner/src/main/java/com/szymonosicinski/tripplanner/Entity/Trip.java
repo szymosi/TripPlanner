@@ -1,5 +1,6 @@
 package com.szymonosicinski.tripplanner.Entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -36,10 +37,12 @@ public class Trip {
 
     @NotNull
     @Column(name="startdate")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date startDate;
 
     @NotNull
     @Column(name="enddate")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date endDate;
 
     @NotNull

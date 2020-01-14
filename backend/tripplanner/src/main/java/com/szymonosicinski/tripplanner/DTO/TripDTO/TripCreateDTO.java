@@ -1,5 +1,6 @@
 package com.szymonosicinski.tripplanner.DTO.TripDTO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import org.hibernate.validator.constraints.Length;
 
@@ -16,7 +17,9 @@ public class TripCreateDTO {
     @Length(max=5000)
     private String descryption;
 
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date startDate;
 
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date endDate;
 }
