@@ -1,7 +1,9 @@
 package com.szymonosicinski.tripplanner.Controller;
 
 import com.szymonosicinski.tripplanner.DTO.TripDTO.TripCreateDTO;
+import com.szymonosicinski.tripplanner.DTO.UserDTO.UserDTO;
 import com.szymonosicinski.tripplanner.Entity.Trip;
+import com.szymonosicinski.tripplanner.Entity.User;
 import com.szymonosicinski.tripplanner.Service.TripService;
 import com.szymonosicinski.tripplanner.Util.CurrentUser;
 import com.szymonosicinski.tripplanner.Util.UserPrincipal;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -41,29 +44,55 @@ public class TripController {
         return new ResponseEntity(tripService.update(tripId, tripCreateDTO, currentUser),HttpStatus.OK);
     }
 
+    @DeleteMapping("/Delete")
+    @ResponseBody
+    public ResponseEntity deleteTrip(@RequestParam(value="tripId") final UUID tripId,
+                                     @CurrentUser final UserPrincipal currentUser){
+        return new ResponseEntity(tripService.delete(tripId,currentUser),HttpStatus.OK);
+    }
+
     @GetMapping("/Organizer")
     public Page<Trip> getByOrganizer(@CurrentUser UserPrincipal currentUser,
                                      @RequestParam(value = "page", defaultValue = "0") final int page,
-                                     @RequestParam(value = "size", defaultValue = "100") final int pageSize){
+                                     @RequestParam(value = "size", defaultValue = "10") final int pageSize){
         return tripService.getByOrganizer(currentUser,
-                PageRequest.of(page,pageSize, Sort.Direction.ASC,"id"));
+                PageRequest.of(page,pageSize, Sort.Direction.ASC,"name"));
     }
 
     @GetMapping("/Participant")
     @ResponseBody
     public Page<Trip> getByParticipant(@CurrentUser final UserPrincipal currentUser,
                                      @RequestParam(value = "page", defaultValue = "0") final int page,
-                                     @RequestParam(value = "size", defaultValue = "100") final int pageSize){
+                                     @RequestParam(value = "size", defaultValue = "10") final int pageSize){
         return tripService.getByParticipant(currentUser,
-                PageRequest.of(page,pageSize, Sort.Direction.ASC,"id"));
+                PageRequest.of(page,pageSize, Sort.Direction.ASC,"name"));
     }
 
-    @PutMapping("/{tripId}")
+    @PutMapping("/AddParticipant")
+    @ResponseBody
     public ResponseEntity addParticipant(@CurrentUser final UserPrincipal currentUser,
-                                         @RequestParam(value = "participantId", defaultValue = "0") final UUID participantId,
-                                         @PathVariable("tripId") UUID tripId){
-        tripService.addParticipant(tripId,participantId,currentUser);
-        return new ResponseEntity(HttpStatus.OK);
+                                         @RequestParam(value = "participantUsername", defaultValue = "") final String participant,
+                                         @RequestParam(value="tripId") final UUID tripId){
+        return new ResponseEntity(tripService.addParticipant(tripId,participant,currentUser),HttpStatus.OK);
+    }
+
+    @DeleteMapping("/RemoveParticipant")
+    @ResponseBody
+    public ResponseEntity  removeParticipant(@CurrentUser final UserPrincipal currentUser,
+                                             @RequestParam(value = "participantId", defaultValue = "0") final UUID participantId,
+                                             @RequestParam(value="tripId") final UUID tripId){
+        return new ResponseEntity(tripService.deleteParticipant(tripId, participantId, currentUser), HttpStatus.OK);
+    }
+
+    @GetMapping("/Participants")
+    @ResponseBody
+    public Page<UserDTO> getParticipants(@CurrentUser final UserPrincipal currentUser,
+                                      @RequestParam(value="tripId") final UUID tripId,
+                                      @RequestParam(value = "page", defaultValue = "0") final int page,
+                                      @RequestParam(value = "size", defaultValue = "10") final int pageSize){
+        return tripService.getParticipants(tripId,
+                PageRequest.of(page,pageSize, Sort.Direction.ASC,"id"),
+                currentUser);
     }
 
     @GetMapping("/isParticipant")
