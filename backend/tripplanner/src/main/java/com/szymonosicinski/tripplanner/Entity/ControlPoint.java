@@ -33,16 +33,8 @@ public class ControlPoint {
     private double latitude;
 
     @NotNull
-    @Column(name="northing")
-    private boolean northing;
-
-    @NotNull
     @Column(name="longitude")
     private double longitude;
-
-    @NotNull
-    @Column(name="easting")
-    private boolean easting;
 
     @NotNull
     @Column(name="visitorder")

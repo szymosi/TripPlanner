@@ -41,6 +41,12 @@ public class ControlPointController {
                 PageRequest.of(page,pageSize, Sort.Direction.ASC,"id"));
     }
 
+    @GetMapping("/GetAll")
+    public List<ControlPoint> getAllControlPoints(@PathVariable("tripId") final UUID tripId,
+                                                  @CurrentUser final UserPrincipal currentUser){
+        return  controlPointService.getAllControlPoints(tripId, currentUser);
+    }
+
     @DeleteMapping("/ControlPointDelete")
     public ResponseEntity removeControlPoint(@RequestParam(value = "controlPointId", defaultValue = "0") final UUID controlPointId,
                                              @PathVariable("tripId") final UUID tripId,

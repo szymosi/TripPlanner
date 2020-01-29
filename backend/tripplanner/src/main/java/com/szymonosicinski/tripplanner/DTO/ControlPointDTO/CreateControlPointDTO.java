@@ -9,15 +9,15 @@ import javax.validation.constraints.Pattern;
 @Getter
 public class CreateControlPointDTO {
 
-    @NotNull
+    //@NotNull
     @Length(max=50)
     String name;
 
-    @Pattern(regexp = "[0-9]{1,2}.[0-9]+[NS]")
+    //@Pattern(regexp = "[0-9]{1,2}.[0-9]+[NS]")
     @NotNull
-    String latitude;
+    float latitude;
 
-    @Pattern(regexp = "[0-9]{1,3}.[0-9]+[EW]")
+    //@Pattern(regexp = "[0-9]{1,3}.[0-9]+[EW]")
     @NotNull
-    String longitude;
+    float longitude;
 }

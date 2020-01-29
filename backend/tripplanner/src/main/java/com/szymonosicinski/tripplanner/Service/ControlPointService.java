@@ -9,6 +9,7 @@ import com.szymonosicinski.tripplanner.Util.UserPrincipal;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +34,7 @@ public class ControlPointService {
         if (currentUser == null)
             throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
         Trip trip=tripService.getByIdAsOrganizer(tripId,currentUser);
-        ControlPoint controlPoint=controlPointConverter(createControlPointDTO);
+        ControlPoint controlPoint=modelMapper.map(createControlPointDTO,ControlPoint.class);//controlPointConverter(createControlPointDTO);
         controlPoint.setOrder(trip.getControlPoints().size());
         controlPoint.setTrip(trip);
         trip.getControlPoints().add(controlPoint);
@@ -48,14 +49,31 @@ public class ControlPointService {
         return controlPointRepository.findAllByTrip_IdOrderByOrderAsc(tripId, pageable);
     }
 
-    public ControlPoint removeControlPoint(UUID tripId, UUID controlPointId, UserPrincipal currentUser){
+    public List<ControlPoint> getAllControlPoints(UUID tripId, UserPrincipal currentUser){
+        if (currentUser == null)
+            throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
+        tripService.getById(tripId, currentUser);
+        return controlPointRepository.findAllByTrip_IdOrderByOrderAsc(tripId);
+        //return new PageImpl<>(controlPoints);
+    }
+
+    public String removeControlPoint(UUID tripId, UUID controlPointId, UserPrincipal currentUser){
         if (currentUser == null)
             throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
         Trip trip = tripService.getByIdAsOrganizer(tripId,currentUser);
         ControlPoint controlPoint = controlPointRepository.getOne(controlPointId);
+
+        List<ControlPoint> controlPoints = trip.getControlPoints();
+        for (ControlPoint point:controlPoints) {
+            if(point.getOrder()>controlPoint.getOrder()){
+                point.setOrder(point.getOrder()-1);
+                controlPointRepository.save(point);
+            }
+        }
+
         trip.getControlPoints().remove(controlPoint);
         controlPointRepository.delete(controlPoint);
-        return controlPoint;
+        return "Control point "+controlPoint.getName()+" removed successfully";
     }
 
     public Page<ControlPoint> changeOrder(UUID tripId, UUID controlPointId, int newPosition, UserPrincipal currentUser, Pageable pageable){
@@ -90,7 +108,7 @@ public class ControlPointService {
         return controlPointRepository.findAllByTrip_IdOrderByOrderAsc(tripId, pageable);
     }
 
-    private ControlPoint controlPointConverter(CreateControlPointDTO createControlPointDTO){
+    /*private ControlPoint controlPointConverter(CreateControlPointDTO createControlPointDTO){
         ControlPoint controlPoint=new ControlPoint();
 
         controlPoint.setName(createControlPointDTO.getName());
@@ -111,5 +129,5 @@ public class ControlPointService {
         }
 
         return controlPoint;
-    }
+    }*/
 }
