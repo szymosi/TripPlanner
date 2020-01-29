@@ -8,13 +8,15 @@ Vue.use(Vuex);
 const state={
     user: null,
     token: "",
-    trip: null
+    trip: null,
+    creatingTrip: false,
    }
 
 const getters={
        user: state=>state.user,
        token: state=>state.token,
-       trip: state=>state.trip
+       trip: state=>state.trip,
+       creatingTrip: state=>state.creatingTrip
    }
 
 const mutations={
@@ -26,6 +28,15 @@ const mutations={
        },
        setTrip(state, trip){
            state.trip=trip
+       },
+       setCreatingTrip(state, creatingTrip){
+           state.creatingTrip=creatingTrip
+       },
+       clearStore(state){
+        state.user=null,
+        state.token="",
+        state.trip=null,
+        state.creatingTrip=null
        }
    }
 

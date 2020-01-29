@@ -18,17 +18,19 @@ export default {
     NavBarLog,
     App
   },
-  afterCreate() {
+  Created() {
 
     return axios.get('http://localhost:8181/User/CurrentUser',{
-      Authorization: this.$store.getters.token
+        headers:{
+          Authorization: 'Bearer:'+this.$store.getters.token
+        }
       }).then(response => {
         this.$store.commit('setUserDetails', response.data);
       })
       .catch(error=>{
           if(error.response){
             this.$store.commit('setUserDetails', null);
-              this.message=error.response.data.message
+            this.message=error.response.data.message
           }
           else if(error.request){
               this.message=error.request

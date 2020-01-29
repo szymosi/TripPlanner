@@ -18,17 +18,18 @@ export default {
     NavBarLog,
     App
   },
-  afterCreate() {
-
+  mounted() {
     return axios.get('http://localhost:8181/User/CurrentUser',{
-      Authorization: this.$store.getters.token
+        headers:{
+          Authorization: 'Bearer:'+this.$store.getters.token
+        }
       }).then(response => {
         this.$store.commit('setUserDetails', response.data);
       })
       .catch(error=>{
           if(error.response){
             this.$store.commit('setUserDetails', null);
-            this.$router.push({path:''});
+            this.$router.push({path:'/'});
             this.message=error.response.data.message
           }
           else if(error.request){

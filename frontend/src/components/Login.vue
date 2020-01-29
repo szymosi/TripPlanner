@@ -33,6 +33,8 @@ export default {
             this.message="";
             this.$eventHub.$emit('Loggedin',response.data);
             
+            axios.defaults.headers.common['Authorization']='Bearer:'+response.data
+            
             this.$toasted.show('User logged in', { 
             theme: "outline", 
             position: "top-right", 

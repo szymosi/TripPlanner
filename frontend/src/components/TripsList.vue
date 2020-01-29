@@ -1,41 +1,56 @@
 <template>
     <div>
-        <b-nav-text v-if="organizingPages>0" style="color:#eef7e9; font-size:25px">Organizing:</b-nav-text>
-        <b-list-group>
-          <list v-for="trip in organizingTrips" v-bind:key="trip">
-            <b-list-group-item id="ListElement" button @click="setChoosenTrip(trip)">{{trip.name}}</b-list-group-item>
-          </list>
-        </b-list-group>
-        <b-pagination id="Pagination" v-if="organizingPages>0" v-model="organizingPage" @change="getOrganizingTrips(organizingPage-1)" :total-rows=this.organizingPages :per-page=1 hide-goto-end-buttons align="right" size="sm"></b-pagination>
-        <br>
-
-        <b-nav-text v-if="participatingPages>0" style="color:#eef7e9; font-size:25px">Participating:</b-nav-text>
-        <b-list-group>
-          <list v-for="trip in participatingTrips" v-bind:key="trip">
-            <b-list-group-item id="ListElement" button>{{trip.name}}</b-list-group-item>
-          </list>
-        </b-list-group>
-        <b-pagination v-if="participatingPages>0" v-model="participatingPage" @change="getParticipatingTrips(participatingPage-1)" :total-rows=this.participatingPages :per-page=1 hide-goto-end-buttons align="right" size="sm"></b-pagination>
-       
+      <v-btn id="createButton" block tile depressed height="47px" @click="createTrip">Create Trip</v-btn>
+      <b-nav-text v-if="organizingPages>0" style="color:#eef7e9; font-size:25px">Organizing:</b-nav-text>
+      <b-list-group>
+         <list v-for="trip in organizingTrips" v-bind:key="trip">
+          <b-list-group-item id="ListElement" button @click="setChoosenTrip(trip)">{{trip.name}}</b-list-group-item>
+        </list>
+      </b-list-group>
+      <v-pagination
+        id="pagination"
+        @input="getOrganizingTrips(organizingPage-1)"
+        v-if="organizingPages>1"
+        v-model="organizingPage"
+        color=#000000
+        :circle=true
+        :length=this.organizingPages
+      ></v-pagination>
+      <br>
+      <b-nav-text v-if="participatingPages>0" style="color:#eef7e9; font-size:25px">Participating:</b-nav-text>
+      <b-list-group>
+        <list v-for="trip in participatingTrips" v-bind:key="trip">
+          <b-list-group-item id="ListElement" button @click="setChoosenTrip(trip)">{{trip.name}}</b-list-group-item>
+        </list>
+      </b-list-group>
+      <v-pagination
+        id="pagination"
+        @input="getParticipatingTrips(organizingPage-1)"
+        v-if="participatingPages>1"
+        v-model="participatingPage"
+        color=#000000
+        :circle=true
+        :length=this.participatingPages
+      ></v-pagination>
     </div>
 </template>
 
 <script>
 import axios from 'axios';
 export default {
-      data: function(){
-        return{
-          organizingTrips: [],
-          participatingTrips: [],
+  data: function(){
+    return{        
+      organizingTrips: [],
+      participatingTrips: [],
 
-          organizingPage: 0,
-          participatingPage: 0,
+      organizingPage: 0,
+      participatingPage: 0,
 
-          organizingPages: 0,
-          participatingPages: 0,
+      organizingPages: 0,
+      participatingPages: 0,
           
-          message: '',
-      };
+      message: '',
+    };
   },
 
   mounted: function() {
@@ -44,9 +59,15 @@ export default {
   },
   
   methods:{
+    createTrip: function(){
+      this.$router.push({path:'trip', query: {trip: undefined}})
+      this.$store.commit('setCreatingTrip', true);
+    },
     setChoosenTrip: function(trip){
+      this.$store.commit('setCreatingTrip', false);
       this.$store.commit('setTrip', trip);
       this.$router.push({path:'trip',query: {trip: trip.id}})
+      window.location.reload()
     },
     getOrganizingTrips: function(page){
       return axios.get('http://localhost:8181/Trip/Organizer',{
@@ -55,7 +76,7 @@ export default {
       },
       params: {
         page: page,
-        size: '1'
+        size: '8'
       }
     })
     .then(response => {
@@ -87,7 +108,7 @@ export default {
       },
       params: {
         page: page,
-        size: '10'
+        size: '8'
       }
     })
     .then(response => {
@@ -121,7 +142,7 @@ export default {
 
   #ListElement{
     background-color: #687864;
-    font-size:20px;
+    font-size:16px;
     color: #eef7e9;
     border-radius:0px;
     border: 0px

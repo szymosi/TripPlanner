@@ -1,7 +1,7 @@
 <template>
 <div>
   <b-navbar toggleable="sm" type="dark"  style="background-color: #687864;">
-    <b-navbar-brand href="#">Trip Planner</b-navbar-brand>
+    <b-navbar-brand href="#" @click="$router.push({path:'/'})">Trip Planner</b-navbar-brand>
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav class="ml-auto">
@@ -41,7 +41,6 @@ export default {
       this.$store.commit('setToken', token);
 
       axios.get('http://localhost:8181/User/CurrentUser',{
-        params:{},
         headers:{
           Authorization: 'Bearer:'+this.$store.getters.token
         }

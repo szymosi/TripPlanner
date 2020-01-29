@@ -1,43 +1,31 @@
 <template>
 <div>
-  <b-nav tabs fill justified>
-    <b-nav-item id="tabs">Active</b-nav-item>
-    <b-nav-item id="tabs">Link</b-nav-item>
-    <b-nav-item id="tabs">Link with a long name </b-nav-item>
-    <b-nav-item id="tabs">Disabled</b-nav-item>
-  </b-nav>
-  <v-tabs
-      fixed-tabs
-      background-color="indigo"
-      dark
-    >
-      <v-tab>
-        Option
-      </v-tab>
-      <v-tab>
-        Another Selection
-      </v-tab>
-      <v-tab>
-        Items
-      </v-tab>
-      <v-tab>
-        Another Screen
-      </v-tab>
-    </v-tabs>
+  <v-tabs fixed-tabs show-arrows background-color="#a7b8a3">
+    <v-tab>General</v-tab>
+    <v-tab>Route</v-tab>
+    <v-tab>Budget</v-tab>
+    <v-tab>Tasks</v-tab>
+    <v-tab>Blog</v-tab>
+
+  <v-tab-item><General></General></v-tab-item>
+  <v-tab-item><Route></Route></v-tab-item>  
+  <v-tab-item>3</v-tab-item>
+  <v-tab-item>4</v-tab-item>  
+  <v-tab-item>5</v-tab-item>  
+  </v-tabs>
 </div>
 </template>
 
 <script>
+import General from '@/components/Tabs/General'
+import Route from '@/components/Tabs/Route'
 export default {
   components:{
+    General,
+    Route
   }
 }
 </script>
 
 <style scoped>
-  #tabs
-  {
-    font-size:18px;
-    color: #eef7e9;
-  }
 </style>

@@ -1,17 +1,22 @@
 <template>
 <div>
   <div id="list"><TripsList/></div>
-  <div id="content"><Trip/></div>
+  <div id="content" style="height: 100%">
+    <Trip v-if="!this.$store.getters.creatingTrip"></Trip>
+    <TripCreate v-if="this.$store.getters.creatingTrip"></TripCreate>
+  </div>
 </div>
 </template>
 
 <script>
 import Trip from '@/components/TripComponent'
 import TripsList from '@/components/TripsList'
+import TripCreate from '@/components/TripCreate'
 export default {
   components:{
   TripsList,
-  Trip
+  Trip,
+  TripCreate
   }
 }
 </script>

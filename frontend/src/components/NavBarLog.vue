@@ -1,7 +1,7 @@
 <template>
 <div>
   <b-navbar toggleable="sm" type="dark"  style="background-color: #687864;">
-    <b-navbar-brand href="#">Trip Planner</b-navbar-brand>
+    <b-navbar-brand href="#" @click="$router.push({path:'/'})">Trip Planner</b-navbar-brand>
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
 
@@ -20,8 +20,7 @@
 export default {
   methods:{
     logout: function(){
-      this.$store.commit('setUserDetails', null);
-      this.$store.commit('setToken',"");
+      this.$store.commit('clearStore');
     }
   }
 }
