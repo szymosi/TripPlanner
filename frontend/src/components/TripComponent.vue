@@ -9,7 +9,7 @@
 
   <v-tab-item><General></General></v-tab-item>
   <v-tab-item><Route></Route></v-tab-item>  
-  <v-tab-item>3</v-tab-item>
+  <v-tab-item><Budget></Budget></v-tab-item>
   <v-tab-item>4</v-tab-item>  
   <v-tab-item>5</v-tab-item>  
   </v-tabs>
@@ -19,10 +19,12 @@
 <script>
 import General from '@/components/Tabs/General'
 import Route from '@/components/Tabs/Route'
+import Budget from '@/components/Tabs/Budget'
 export default {
   components:{
     General,
-    Route
+    Route,
+    Budget
   }
 }
 </script>

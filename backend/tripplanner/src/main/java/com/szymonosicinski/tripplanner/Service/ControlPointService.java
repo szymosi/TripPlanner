@@ -35,7 +35,7 @@ public class ControlPointService {
             throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
         Trip trip=tripService.getByIdAsOrganizer(tripId,currentUser);
         ControlPoint controlPoint=modelMapper.map(createControlPointDTO,ControlPoint.class);//controlPointConverter(createControlPointDTO);
-        controlPoint.setOrder(trip.getControlPoints().size());
+        controlPoint.setOrder(trip.getControlPoints().size()+1);
         controlPoint.setTrip(trip);
         trip.getControlPoints().add(controlPoint);
         controlPointRepository.save(controlPoint);

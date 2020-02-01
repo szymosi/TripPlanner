@@ -8,8 +8,6 @@
 
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav class="ml-auto">
-        
-    {{message}}
         <b-nav-text style="color:#eef7e9">User: {{this.$store.getters.user.username}}</b-nav-text>&nbsp;
         <b-nav-item id="LogoutButton" @click="logout">Logout</b-nav-item>
       </b-navbar-nav>
@@ -21,13 +19,8 @@
 <script>
 import axios from 'axios';
 export default {
-  data(){
-    return{
-    message:'asdsad',
-    }
-  },
   created(){
-    this.interval = setInterval(() => this.refreshToken(), 720000);
+    this.interval = setInterval(() => this.refreshToken(), 10*60*1000);
   },
   beforeDestroy(){
     clearInterval(this.interval);
@@ -43,14 +36,13 @@ export default {
         }
       }).then(response => {
         this.$store.commit('setToken', response.data);
-      }).catch(error =>{
-        this.message=error,
+      }).catch(
         this.$toasted.show('Cannot refresh token', { 
         theme: "outline", 
         position: "top-right", 
         duration : 1000
         })
-      })
+      )
     }
   }
 }

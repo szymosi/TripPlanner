@@ -11,6 +11,7 @@
 
 html, body {
   height: 100%;
+  min-width: 800px;
 }
 
 #app {

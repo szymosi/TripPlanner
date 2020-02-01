@@ -1,11 +1,11 @@
 <template>
 <div style="height: calc(100vh - 150px); background-color:#a7b8a3">
     <div style="padding:30px; width:40%; height:100%; float: left;">
-        <v-text-field clearable label="Point name" v-model=name
+        <v-text-field v-if=isOrganizer clearable label="Point name" v-model=name
             :rules="nameRules" counter="50"></v-text-field>
-        <gmap-autocomplete placeholder="Enter location" @place_changed="setPlace" style="width:100%"></gmap-autocomplete>
+        <gmap-autocomplete v-if=isOrganizer placeholder="Enter location" @place_changed="setPlace" style="width:100%"></gmap-autocomplete>
         <br>
-        <v-btn color="#548561" @click="addPointBtn" large block>Add point</v-btn>
+        <v-btn v-if=isOrganizer color="#548561" @click="addPointBtn" large block>Add point</v-btn>
         <br>
         <b-list-group>
             <list v-for="controlPoint in controlPoints" v-bind:key="controlPoint">
@@ -20,12 +20,16 @@
           color=#000000
           :circle=true
           :length=this.pages
+          style="padding-top: 15px"
           ></v-pagination>
-          <div v-if="controlPoint">
-            <v-text-field v-model="controlPoint.order" :change="changeOrder(controlPoint.order)" style="width: 50px; float: left"></v-text-field>
+          
+          <div v-if=controlPoint&&isOrganizer style="padding-top: 15px">
+            <v-text-field label="Order" v-model="controlPoint.order" style="width: 50px; float: left"></v-text-field>
+
+            <i class="fas fa-map-marked-alt fa-2x" @click="changeOrder(controlPoint.order)" style="float: left; color: #ffffff"></i>
             <h4>{{controlPoint.name}}</h4>
 
-            <v-btn id="deletePointbtn" retain-focus-on-click color="#548561" block>Remove point from trip</v-btn>
+            <v-btn v-if=isOrganizer id="deletePointbtn" retain-focus-on-click color="#548561" block>Remove point from trip</v-btn>
               <b-popover target="deletePointbtn" triggers="focus" placement="bottom">
                   <h6>Are you sure you want to remove point from trip</h6>
                   <b-button @click="delPointBtn" style="background-color: #687864;">Yes</b-button>
@@ -60,16 +64,22 @@ export default {
       message: "",
     };
   },
+  computed:{
+    isOrganizer: function(){
+      return this.$store.getters.user.id==this.$store.getters.trip.organizer
+    }
+  },
   mounted() {
     this.geolocate();
     this.getAllControlPoints();
     this.getControlPoints(0);
   },
   methods: {
-    addPointBtn: function(){
+    async addPointBtn(){
       if(this.place){
         this.addControlPoint(this.place.geometry.location.lat(), this.place.geometry.location.lng()),
         this.addMarker(),
+        await new Promise(r => setTimeout(r, 200));
         this.getControlPoints(this.page-1)
       }
     },
@@ -81,8 +91,9 @@ export default {
       };
       this.center = marker;
     },
-    delPointBtn: function(){
+    async delPointBtn(){
       this.deleteControlPoint();
+      await new Promise(r => setTimeout(r, 200));
       this.getControlPoints(this.page-1);
       this.controlPoint=null;
     },
@@ -122,7 +133,6 @@ export default {
         params: {
           page: pageNr,
           size: 8
-          //tripId: this.$store.getters.trip.id,
         }
       })
       .then(response => {
@@ -171,13 +181,13 @@ export default {
         this.showError(error)
       })
     },
-    addControlPoint: async function(lat, lng) {
+    addControlPoint: function(lat, lng) {
 
       if(this.name==""){
         this.name=lat+" "+lng
       }
       axios.defaults.headers.common['Authorization']='Bearer:'+this.$store.getters.token,
-      await axios.put(this.$url +'/'+ this.$store.getters.trip.id + '/Route/ControlPointAdd',{
+      axios.put(this.$url +'/'+ this.$store.getters.trip.id + '/Route/ControlPointAdd',{
           latitude: lat,
           longitude: lng,
           name: this.name,
@@ -190,18 +200,13 @@ export default {
       })
     },
     changeOrder: function(pos){
-      axios.post(this.$url +'/'+ this.$store.getters.trip.id + '/Route/ChangeOrder',{
-        headers:{
-          Authorization: 'Bearer:'+this.$store.getters.token
-        },
-        params: {
-          controlPointId: this.controlPoint.id,
-          newPosition: pos,
-          page: this.page,
-          size: 8
-          //tripId: this.$store.getters.trip.id,
-        }
-      })
+      axios.defaults.headers.common['Authorization']='Bearer:'+this.$store.getters.token,
+      axios.put(this.$url +'/'+ this.$store.getters.trip.id + '/Route/ChangeOrder'+'?'+
+          'controlPointId='+ this.controlPoint.id+
+          '&newPosition='+ pos+
+          '&page='+ (this.page-1)+
+          '&size='+ 8
+      )
       .then(response => {
         this.pages=response.data.totalPages;
         this.controlPoints=response.data.content;

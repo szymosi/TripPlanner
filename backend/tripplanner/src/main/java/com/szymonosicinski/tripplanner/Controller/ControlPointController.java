@@ -54,8 +54,8 @@ public class ControlPointController {
         return new ResponseEntity(controlPointService.removeControlPoint(tripId,controlPointId,currentUser),HttpStatus.OK);
     }
 
-    @PostMapping("/ChangeOrder")
-    public Page<ControlPoint> changeOrder(@RequestParam(value = "controlPointId", defaultValue = "0") final UUID controlPointId,
+    @PutMapping("/ChangeOrder")
+    public Page<ControlPoint> changeOrder(@RequestParam(value = "controlPointId") final UUID controlPointId,
                                           @RequestParam(value = "newPosition", defaultValue = "0") final int newPosition ,
                                           @PathVariable("tripId") final UUID tripId,
                                           @CurrentUser final UserPrincipal currentUser,
