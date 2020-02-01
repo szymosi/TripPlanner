@@ -56,7 +56,7 @@ export default {
         register: function(){
           this.$eventHub.$emit('Registered');
 
-          axios.put('http://localhost:8181/User/Registration',{
+          axios.put(this.$url+'/User/Registration',{
           username: this.login,
           password: this.password,
           passwordRepeat: this.passwordRepeat,

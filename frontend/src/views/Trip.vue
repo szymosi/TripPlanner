@@ -19,7 +19,7 @@ export default {
     App
   },
   mounted() {
-    return axios.get('http://localhost:8181/User/CurrentUser',{
+    return axios.get(this.$url+'/User/CurrentUser',{
         headers:{
           Authorization: 'Bearer:'+this.$store.getters.token
         }

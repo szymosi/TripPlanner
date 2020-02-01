@@ -40,7 +40,7 @@ export default {
       
       this.$store.commit('setToken', token);
 
-      axios.get('http://localhost:8181/User/CurrentUser',{
+      axios.get(this.$url+'/User/CurrentUser',{
         headers:{
           Authorization: 'Bearer:'+this.$store.getters.token
         }

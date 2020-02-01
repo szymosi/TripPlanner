@@ -1,6 +1,7 @@
 <template>
   <div>
       <b-form>
+      
            <label>Login</label>
           <b-input v-model="login" id="login"></b-input>
 
@@ -26,7 +27,7 @@ export default {
     methods:{
         loginFunc: function(){
 
-          axios.post('http://localhost:8181/User/Login',{
+          axios.post(this.$url+'/User/Login',{
           username: this.login,
           password: this.password
           }).then(response => {

@@ -70,7 +70,7 @@ export default {
       window.location.reload()
     },
     getOrganizingTrips: function(page){
-      return axios.get('http://localhost:8181/Trip/Organizer',{
+      return axios.get(this.$url+'/Trip/Organizer',{
       headers:{
         Authorization: 'Bearer:'+this.$store.getters.token
       },
@@ -102,7 +102,7 @@ export default {
     },
 
     getParticipatingTrips: function(page){
-      return axios.get('http://localhost:8181/Trip/Participant',{
+      return axios.get(this.$url+'/Trip/Participant',{
       headers:{
         Authorization: 'Bearer:'+this.$store.getters.token
       },

@@ -58,7 +58,7 @@ export default {
             })
             return
             }
-            return axios.put('http://localhost:8181/Trip/Create',{
+            return axios.put(this.$url+'/Trip/Create',{
                 name: this.name,
                 descryption: this.descryption,
                 startDate: this.reverseDate[0],

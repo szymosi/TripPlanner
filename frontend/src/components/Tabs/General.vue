@@ -109,7 +109,7 @@ export default {
             return
             }
             axios.defaults.headers.common['Authorization']='Bearer:'+this.$store.getters.token,
-            axios.post('http://localhost:8181/Trip/Update'+'?tripId='+this.$store.getters.trip.id,{
+            axios.post(this.$url+'/Trip/Update'+'?tripId='+this.$store.getters.trip.id,{
                 name: this.name,
                 descryption: this.descryption,
                 startDate: this.startDate,
@@ -131,7 +131,7 @@ export default {
             })
         },
         deleteTrip: function(){
-            return axios.delete('http://localhost:8181/Trip/Delete',{
+            return axios.delete(this.$url+'/Trip/Delete',{
             headers:{
                 Authorization: 'Bearer:'+this.$store.getters.token
             },
@@ -156,7 +156,7 @@ export default {
             })                    
         },
         getParticipants: function(page){
-            return axios.get('http://localhost:8181/Trip/Participants',{
+            return axios.get(this.$url+'/Trip/Participants',{
             headers:{
                 Authorization: 'Bearer:'+this.$store.getters.token
             },
@@ -177,7 +177,7 @@ export default {
         },
         addParticipant: function(){
             axios.defaults.headers.common['Authorization']='Bearer:'+this.$store.getters.token,
-            axios.put('http://localhost:8181/Trip/AddParticipant'+
+            axios.put(this.$url+'/Trip/AddParticipant'+
                 '?participantUsername='+this.username+
                 '&tripId='+this.$store.getters.trip.id,
             )
@@ -194,7 +194,7 @@ export default {
             //window.location.reload()
         },
         removeParticipant: function(){
-            return axios.delete('http://localhost:8181/Trip/RemoveParticipant',{
+            return axios.delete(this.$url+'/Trip/RemoveParticipant',{
             headers:{
                 Authorization: 'Bearer:'+this.$store.getters.token
             },

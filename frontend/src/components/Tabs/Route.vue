@@ -115,7 +115,7 @@ export default {
       });
     },
     getControlPoints: function(pageNr) {
-      axios.get('http://localhost:8181/' + this.$store.getters.trip.id + '/Route',{
+      axios.get(this.$url +'/'+ this.$store.getters.trip.id + '/Route',{
         headers:{
           Authorization: 'Bearer:'+this.$store.getters.token
         },
@@ -132,10 +132,10 @@ export default {
       .catch(error=>{
         this.showError(error)
       })
-      this.$$forceUpdate();       
+      this.$forceUpdate();       
     },
     getAllControlPoints: function() {
-        axios.get('http://localhost:8181/' + this.$store.getters.trip.id + '/Route/GetAll',{
+        axios.get(this.$url +'/'+ this.$store.getters.trip.id + '/Route/GetAll',{
         headers:{
           Authorization: 'Bearer:'+this.$store.getters.token
         }
@@ -151,7 +151,7 @@ export default {
       })
     },
     deleteControlPoint: function(){
-      axios.delete('http://localhost:8181/' + this.$store.getters.trip.id + '/Route/ControlPointDelete',{
+      axios.delete(this.$url +'/'+ this.$store.getters.trip.id + '/Route/ControlPointDelete',{
         headers:{
           Authorization: 'Bearer:'+this.$store.getters.token
         },
@@ -177,7 +177,7 @@ export default {
         this.name=lat+" "+lng
       }
       axios.defaults.headers.common['Authorization']='Bearer:'+this.$store.getters.token,
-      await axios.put('http://localhost:8181/' + this.$store.getters.trip.id + '/Route/ControlPointAdd',{
+      await axios.put(this.$url +'/'+ this.$store.getters.trip.id + '/Route/ControlPointAdd',{
           latitude: lat,
           longitude: lng,
           name: this.name,
@@ -190,7 +190,7 @@ export default {
       })
     },
     changeOrder: function(pos){
-      axios.post('http://localhost:8181/' + this.$store.getters.trip.id + '/Route/ChangeOrder',{
+      axios.post(this.$url +'/'+ this.$store.getters.trip.id + '/Route/ChangeOrder',{
         headers:{
           Authorization: 'Bearer:'+this.$store.getters.token
         },
