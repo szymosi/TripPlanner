@@ -10,7 +10,6 @@ import com.szymonosicinski.tripplanner.Util.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -46,5 +45,10 @@ public class UserController {
     @PostMapping("/Login")
     public ResponseEntity login(@RequestBody final LoginDTO loginDTO){
         return new ResponseEntity(userService.authenticate(loginDTO),HttpStatus.OK);
+    }
+
+    @GetMapping("/RefreshToken")
+    public ResponseEntity refreshToken(@CurrentUser final UserPrincipal currentUser){
+        return new ResponseEntity(userService.refreshToken(currentUser),HttpStatus.OK);
     }
 }

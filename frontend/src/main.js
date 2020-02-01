@@ -26,6 +26,7 @@ Vue.use(BootstrapVue)
 Vue.use(Toasted)
 
 Vue.prototype.$eventHub = new Vue();
+Vue.prototype.$url = "http://192.168.1.166:8181";
 
 Vue.config.productionTip = false
 

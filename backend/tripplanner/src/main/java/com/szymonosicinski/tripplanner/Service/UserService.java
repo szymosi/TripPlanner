@@ -58,9 +58,12 @@ public class UserService{
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDTO.getUsername(),loginDTO.getPassword())
         );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtProvider.generateToken(authentication);
         return jwt;
+    }
+
+    public String refreshToken(final UserPrincipal currentUser){
+        return jwtProvider.generateToken(currentUser);
     }
 
     public UserDTO getUser(String username){

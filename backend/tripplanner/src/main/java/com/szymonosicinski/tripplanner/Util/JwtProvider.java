@@ -19,6 +19,10 @@ public class JwtProvider {
 
     public String generateToken(final Authentication authentication) {
         final UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+        return generateToken(userPrincipal);
+    }
+
+    public String generateToken(final UserPrincipal userPrincipal) {
 
         final Date now = new Date();
         final Date expiryDate = new Date(now.getTime() + jwtExpirationMs);
