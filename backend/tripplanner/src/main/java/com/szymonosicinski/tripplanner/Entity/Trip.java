@@ -50,7 +50,6 @@ public class Trip {
     @org.hibernate.annotations.Type(type = "pg-uuid")
     private UUID organizer;
 
-    @NotNull
     @OneToOne(mappedBy = "trip",cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, targetEntity = Budget.class)
     @JsonIgnore
     private Budget budget;

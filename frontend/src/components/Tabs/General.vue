@@ -178,7 +178,6 @@ export default {
             });
 
             this.$store.commit("setTrip", response.data);
-            //window.location.reload()
             this.$router.push({
               path: "trip",
               query: { trip: response.data.id }
@@ -198,18 +197,18 @@ export default {
             tripId: this.$store.getters.trip.id
           }
         })
-        .then(response => {
-          this.$store.commit("setCreatingTrip", false);
-          this.$store.commit("setTrip", null);
-          this.$router.push({ path: "" });
-          //window.location.reload()
-
-          this.$toasted.show(response.name + " deleted", {
+        .then(
+          this.$store.commit("setCreatingTrip", false),
+          this.$store.commit("setTrip", null),
+          this.$router.push({ path: "" }),
+          this.$forceUpdate(),
+          window.location.reload(),
+          this.$toasted.show("trip deleted", {
             theme: "outline",
             position: "top-right",
             duration: 1000
-          });
-        })
+          })
+        )
         .catch(error => {
           this.showError(error);
         });
@@ -235,7 +234,7 @@ export default {
           this.showError(error);
         });
     },
-    addParticipant: function() {
+    async addParticipant() {
       (axios.defaults.headers.common["Authorization"] =
         "Bearer:" + this.$store.getters.token),
         axios
@@ -257,10 +256,11 @@ export default {
           .catch(error => {
             this.showError(error);
           });
-      //window.location.reload()
+      await new Promise(r => setTimeout(r, 200));
+      this.getParticipants(this.participantsPage - 1);
     },
-    removeParticipant: function() {
-      return axios
+    async removeParticipant() {
+      axios
         .delete(this.$url + "/Trip/RemoveParticipant", {
           headers: {
             Authorization: "Bearer:" + this.$store.getters.token
@@ -283,7 +283,8 @@ export default {
         .catch(error => {
           this.showError(error);
         });
-      //window.location.reload()
+      await new Promise(r => setTimeout(r, 200));
+      this.getParticipants(this.participantsPage - 1);
     },
     showError: function(error) {
       if (error.response) {

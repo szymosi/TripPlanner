@@ -30,6 +30,12 @@ public class TripController {
     @Autowired
     private TripService tripService;
 
+    @GetMapping()
+    public ResponseEntity getTrip(@RequestParam(value="tripId") final UUID tripId,
+                                  @CurrentUser final UserPrincipal currentUser){
+        return new ResponseEntity(tripService.getById(tripId, currentUser), HttpStatus.OK);
+    }
+
     @PutMapping("/Create")
     public ResponseEntity createTrip(@RequestBody @Valid final TripCreateDTO tripCreateDTO,
                                      @CurrentUser final UserPrincipal currentUser){

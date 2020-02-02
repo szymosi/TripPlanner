@@ -7,6 +7,8 @@ import com.szymonosicinski.tripplanner.Entity.Expense;
 import com.szymonosicinski.tripplanner.Entity.Trip;
 import com.szymonosicinski.tripplanner.Entity.User;
 import com.szymonosicinski.tripplanner.Exception.ExceptionMessage;
+import com.szymonosicinski.tripplanner.Repository.BudgetRepository;
+import com.szymonosicinski.tripplanner.Repository.ExpenseRepository;
 import com.szymonosicinski.tripplanner.Repository.TripRepository;
 import com.szymonosicinski.tripplanner.Repository.UserRepository;
 import com.szymonosicinski.tripplanner.Util.UserPrincipal;
@@ -21,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+
+
 @Service
 public class TripService {
 
@@ -30,14 +34,18 @@ public class TripService {
     TripRepository tripRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    ExpenseRepository expenseRepository;
+    @Autowired
+    BudgetRepository budgetRepository;
 
     public Trip create(TripCreateDTO tripCreateDTO, UserPrincipal currentUser){
         if(currentUser==null)
             throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
         Trip trip =modelMapper.map(tripCreateDTO,Trip.class);
         trip.setOrganizer(currentUser.getId());
-        internalEntities(trip);
         tripRepository.save(trip);
+        internalEntities(trip);
         return trip;
     }
 
@@ -166,13 +174,15 @@ public class TripService {
     }
 
     private void internalEntities(Trip trip){
+        Expense expense=new Expense();
+        expense.setName("Sum");
+        expenseRepository.save(expense);
+
         Budget budget=new Budget();
         budget.setTrip(trip);
         trip.setBudget(budget);
-
-        Expense expense=new Expense();
-        expense.setName("Sum");
         expense.setBudget(budget);
         budget.setExpense(expense);
+        budgetRepository.save(budget);
     }
 }

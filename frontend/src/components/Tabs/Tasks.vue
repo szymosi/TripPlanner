@@ -24,7 +24,7 @@
           <v-row>
             <v-col cols="12" md="1">
               <v-checkbox
-                v-if="isOrganizer || task.user.id==this.$store.getters.user.id"
+                v-if="isOrganizer||task.user.id==$store.getters.user.id"
                 v-model="task.finish"
                 @mouseup="statusChange(task)"
               ></v-checkbox>
