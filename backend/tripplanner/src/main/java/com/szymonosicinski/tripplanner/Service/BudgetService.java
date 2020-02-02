@@ -44,13 +44,17 @@ public class BudgetService {
         return budget;
     }
 
-    public Expense addExpense(ExpenseDTO expenseDTO, UUID tripId, UserPrincipal currentUser) {
+    public Expense addExpense(ExpenseDTO expenseDTO, UUID parentExpenseId, UUID tripId, UserPrincipal currentUser) {
         if (currentUser == null)
             throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
         Budget budget = tripService.getByIdAsOrganizer(tripId, currentUser).getBudget();
+        Expense parent=getExpenseAsOrganizer(parentExpenseId, tripId, currentUser);
         Expense expense=modelMapper.map(expenseDTO, Expense.class);
         expense.setBudget(budget);
+        expense.setParentExpense(parent);
+        parent.getChildren().add(expense);
         expenseRepository.save(expense);
+        expense.getParentExpense().updateCost(expenseRepository);
         return expense;
     }
 
@@ -60,14 +64,24 @@ public class BudgetService {
         Budget budget = tripService.getByIdAsOrganizer(tripId, currentUser).getBudget();
         Expense expense=expenseRepository.findById(expenseId)
                 .orElseThrow(()->new RuntimeException(ExceptionMessage.RESOURCE_NOT_FOUND.toString()));
-        if(expense.getBudget().equals(budget))
+
+        Expense parentexpense=expense;
+        while(parentexpense.getParentExpense()!=null)
+            parentexpense=parentexpense.getParentExpense();
+
+        if(!parentexpense.getBudget().getId().equals(budget.getId()))
             throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
+
         return expense;
     }
 
     public Expense removeExpense(UUID expenseId, UUID tripId, UserPrincipal currentUser){
         Expense expense=getExpenseAsOrganizer(expenseId, tripId, currentUser);
+        if(expense.getParentExpense()==null)
+            throw new RuntimeException(ExceptionMessage.COST_ROOT.toString());
         expenseRepository.delete(expense);
+        expense.getParentExpense().getChildren().remove(expense);
+        expense.getParentExpense().updateCost(expenseRepository);
         return  expense;
     }
 
@@ -75,6 +89,8 @@ public class BudgetService {
         Expense expense=getExpenseAsOrganizer(expenseId, tripId, currentUser);
         modelMapper.map(expenseDTO, expense);
         expenseRepository.save(expense);
+
+        expense.getParentExpense().updateCost(expenseRepository);
         return  expense;
     }
 }

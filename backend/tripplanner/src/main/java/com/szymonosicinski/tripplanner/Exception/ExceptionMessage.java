@@ -8,7 +8,8 @@ public enum ExceptionMessage {
     USER_NOT_LOGGED_IN("User is not logged in"),
     RESOURCE_NOT_FOUND("Resource does not exist"),
     ACCESS_DENIED("Permision not granted for operation"),
-    INPUT_ERROR("Wrong input data");
+    INPUT_ERROR("Wrong input data"),
+    COST_ROOT("Cannot remove root expense");
 
     private final String exceptionMessage;
 

@@ -10,7 +10,7 @@
 
             <h5 v-if="dates[0]&&dates[1]">Start date: {{reverseDate[0]}} End date: {{reverseDate[1]}}</h5>
             <br/>
-            <v-btn @click="createTrip" color="#548561" x-large block>Create trip</v-btn>
+            <v-btn @click="createTrip" color="#548561" x-large block>Create</v-btn>
             <v-btn @click="cancel" color="#548561" x-large block>Cancel</v-btn>
         </div>
     </v-row>

@@ -35,20 +35,21 @@ public class BudgetController {
 
     @PutMapping("/ExpenseAdd")
     public ResponseEntity addExpense(@RequestBody @Valid final ExpenseDTO expenseDTO,
+                                     @RequestParam(value = "parentExpense") final UUID parentExpenseId,
                                      @PathVariable("tripId") final UUID tripId,
                                      @CurrentUser final UserPrincipal currentUser){
-        return new ResponseEntity(budgetService.addExpense(expenseDTO,tripId,currentUser),HttpStatus.CREATED);
+        return new ResponseEntity(budgetService.addExpense(expenseDTO, parentExpenseId, tripId, currentUser),HttpStatus.CREATED);
     }
 
     @DeleteMapping("/ExpenseDelete")
-    public ResponseEntity removeExpense(@RequestParam(value = "expenseId", defaultValue = "0") final UUID expenseId,
+    public ResponseEntity removeExpense(@RequestParam(value = "expenseId") final UUID expenseId,
                                  @PathVariable("tripId") final UUID tripId,
                                  @CurrentUser final UserPrincipal currentUser){
         return new ResponseEntity(budgetService.removeExpense(expenseId,tripId,currentUser),HttpStatus.OK);
     }
 
     @PostMapping("/ExpenseUpdate")
-    public ResponseEntity updateExpense(@RequestParam(value = "expenseId", defaultValue = "0") final UUID expenseId,
+    public ResponseEntity updateExpense(@RequestParam(value = "expenseId") final UUID expenseId,
                                         @RequestBody @Valid final ExpenseDTO expenseDTO,
                                         @PathVariable("tripId") final UUID tripId,
                                         @CurrentUser final UserPrincipal currentUser){

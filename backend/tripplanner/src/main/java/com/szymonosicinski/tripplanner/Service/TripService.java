@@ -173,7 +173,7 @@ public class TripService {
         trip.setBudget(budget);
 
         Expense expense=new Expense();
-        expense.setName("sum");
+        expense.setName("Sum");
         expense.setBudget(budget);
         budget.setExpense(expense);
     }

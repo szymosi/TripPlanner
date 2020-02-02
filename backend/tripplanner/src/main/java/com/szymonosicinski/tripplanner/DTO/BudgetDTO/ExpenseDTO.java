@@ -15,7 +15,4 @@ public class ExpenseDTO {
 
     @NotNull
     private float cost;
-
-    @NotNull
-    private UUID parentExpense;
 }
