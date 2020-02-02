@@ -9,7 +9,9 @@ public enum ExceptionMessage {
     RESOURCE_NOT_FOUND("Resource does not exist"),
     ACCESS_DENIED("Permision not granted for operation"),
     INPUT_ERROR("Wrong input data"),
-    COST_ROOT("Cannot remove root expense");
+    COST_ROOT("Cannot remove root expense"),
+    NOT_PARTICIPANT("User is not participant"),
+    IS_PARTICIPANT("User already is participant");
 
     private final String exceptionMessage;
 

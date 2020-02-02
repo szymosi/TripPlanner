@@ -106,16 +106,14 @@ public class TripService {
             throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
         User user = userRepository.findByUsername(participant)
                 .orElseThrow(()->new RuntimeException(ExceptionMessage.RESOURCE_NOT_FOUND.toString()));
-        int participantAdded=0;
+        if(isParticipant(tripId, user))
+            throw new RuntimeException(ExceptionMessage.IS_PARTICIPANT.toString());
         try {
             tripRepository.saveParticipant(tripId,user.getId());
         } catch (Exception e){
             return "Participant could not be added";
         }
-        if(participantAdded==1)
-            return "Participant added succesfuly";
-        else
-            return "Participant could not be added";
+        return "Participant added succesfuly";
     }
 
     public String deleteParticipant(UUID tripId, UUID participantId, UserPrincipal currentUser){

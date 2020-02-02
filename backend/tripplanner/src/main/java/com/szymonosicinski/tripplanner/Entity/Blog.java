@@ -49,7 +49,7 @@ public class Blog {
     private Visibility visibility;
 
     @NotNull
-    @OneToOne(fetch=FetchType.LAZY,cascade = CascadeType.PERSIST)
+    @OneToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="id_trip", referencedColumnName = "id")
     @JsonIgnore
     private Trip trip;

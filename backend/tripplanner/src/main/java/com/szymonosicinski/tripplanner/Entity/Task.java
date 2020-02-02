@@ -1,5 +1,6 @@
 package com.szymonosicinski.tripplanner.Entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,9 +33,11 @@ public class Task {
     private boolean finish;
 
     @Column(name="deadline")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date deadline;
 
     @Column(name="finishdate")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date finishDate;
 
     @NotNull
@@ -43,8 +46,7 @@ public class Task {
     @JsonIgnore
     private Trip trip;
 
-    @ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = User.class)
+    @ManyToOne(fetch=FetchType.EAGER, targetEntity = User.class)
     @JoinColumn(name="id_user", referencedColumnName = "id")
-    @JsonIgnore
     private User user;
 }

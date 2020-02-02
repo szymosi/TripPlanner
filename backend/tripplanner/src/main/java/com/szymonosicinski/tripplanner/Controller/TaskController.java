@@ -1,22 +1,20 @@
 package com.szymonosicinski.tripplanner.Controller;
 
 import com.szymonosicinski.tripplanner.DTO.TaskDTO.CreateTaskDTO;
+import com.szymonosicinski.tripplanner.DTO.TaskDTO.TaskDTO;
 import com.szymonosicinski.tripplanner.Entity.Task;
 import com.szymonosicinski.tripplanner.Service.TaskService;
 import com.szymonosicinski.tripplanner.Util.CurrentUser;
 import com.szymonosicinski.tripplanner.Util.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -27,9 +25,9 @@ public class TaskController {
 
     @GetMapping()
     public Page<Task> getTasks(@PathVariable("tripId") final UUID tripId,
-                               @CurrentUser final UserPrincipal currentUser,
-                               @RequestParam(value = "page", defaultValue = "0") final int page,
-                               @RequestParam(value = "size", defaultValue = "100") final int pageSize){
+                                  @CurrentUser final UserPrincipal currentUser,
+                                  @RequestParam(value = "page", defaultValue = "0") final int page,
+                                  @RequestParam(value = "size", defaultValue = "100") final int pageSize){
         return taskService.getTasks(tripId,currentUser,
                 PageRequest.of(page,pageSize, Sort.Direction.ASC,"deadline"));
     }

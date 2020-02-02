@@ -1,7 +1,6 @@
 package com.szymonosicinski.tripplanner.Repository;
 
 import com.szymonosicinski.tripplanner.Entity.Task;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,5 +15,7 @@ public interface TaskRepository extends JpaRepository<Task, UUID> {
 
     Optional<Task> findById(UUID taskId);
 
-    Page<Task> findAllByTrip_IdOrderByDeadlineAsc(UUID tripId, Pageable pageable);
+    Page<Task> findByTrip_IdOrderByDeadlineAsc(UUID tripId, Pageable pageable);
+
+    List<Task> findAllByTrip_IdOrderByDeadlineAsc(UUID tripId);
 }

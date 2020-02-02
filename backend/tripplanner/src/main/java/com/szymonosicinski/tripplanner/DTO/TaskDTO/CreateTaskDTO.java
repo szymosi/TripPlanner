@@ -1,6 +1,9 @@
 package com.szymonosicinski.tripplanner.DTO.TaskDTO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Builder;
 import lombok.Getter;
+import net.bytebuddy.implementation.bind.annotation.Default;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
@@ -16,7 +19,8 @@ public class CreateTaskDTO {
 
     boolean finish;
 
+    @JsonFormat(pattern="yyyy-MM-dd")
     Date deadline;
 
-    UUID user;
+    String user;
 }

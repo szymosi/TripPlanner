@@ -51,19 +51,19 @@ public class Trip {
     private UUID organizer;
 
     @NotNull
-    @OneToOne(mappedBy = "trip",cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Budget.class)
+    @OneToOne(mappedBy = "trip",cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, targetEntity = Budget.class)
     @JsonIgnore
     private Budget budget;
 
-    @OneToOne(mappedBy = "trip", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "trip",cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @JsonIgnore
     private Blog blog;
 
-    @OneToMany(mappedBy = "trip", fetch = FetchType.LAZY, targetEntity = ControlPoint.class)
+    @OneToMany(mappedBy = "trip",cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, targetEntity = ControlPoint.class)
     @JsonIgnore
     private List<ControlPoint> controlPoints=new ArrayList<>();
 
-    @OneToMany(mappedBy = "trip", fetch = FetchType.LAZY, targetEntity = Task.class)
+    @OneToMany(mappedBy = "trip",cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, targetEntity = Task.class)
     @JsonIgnore
     private Set<Task> tasks=new HashSet<>();
 }
