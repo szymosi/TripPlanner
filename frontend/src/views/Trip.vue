@@ -61,6 +61,7 @@ export default {
         .catch(error => {
           if (error.response) {
             this.message = error.response.data.message;
+            this.$store.commit('clearStore');
           } else if (error.request) {
             this.message = error.request;
           } else {

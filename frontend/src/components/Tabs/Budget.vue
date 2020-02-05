@@ -77,7 +77,9 @@ export default {
   },
   computed: {
     leftFounds() {
-      return this.founds - this.expenses[0].cost;
+      if(this.expenses[0]!=null)
+        return this.founds - this.expenses[0].cost;
+      return 0;
     },
     isOrganizer: function() {
       return this.$store.getters.user.id == this.$store.getters.trip.organizer;

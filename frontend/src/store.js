@@ -12,6 +12,7 @@ const state={
     trip: null,
     creatingTrip: false,
     participants: null,
+    blog: null
    }
 
 const getters={
@@ -20,6 +21,7 @@ const getters={
        trip: state=>state.trip,
        creatingTrip: state=>state.creatingTrip,
        participants: state=>state.participants,
+       blog: state=>state.blog
    }
 
 const mutations={
@@ -37,6 +39,9 @@ const mutations={
        },
        setParticipants(state, participants){
             state.participants=participants
+       },
+       setBlog(state, blog){
+           state.blog=blog
        },
        clearStore(state){
         state.user=null,

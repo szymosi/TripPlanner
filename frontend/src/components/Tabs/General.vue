@@ -257,7 +257,7 @@ export default {
             this.showError(error);
           });
       await new Promise(r => setTimeout(r, 200));
-      this.getParticipants(this.participantsPage - 1);
+      this.getParticipants(this.participantsPage);
     },
     async removeParticipant() {
       axios

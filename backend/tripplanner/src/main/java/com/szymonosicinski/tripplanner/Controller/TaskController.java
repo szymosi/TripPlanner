@@ -48,7 +48,7 @@ public class TaskController {
 
     @PostMapping("/TaskUpdate")
     public ResponseEntity updateTask(@PathVariable("tripId") final UUID tripId,
-                                     @RequestParam(value = "taskId", defaultValue = "0") final UUID taskId,
+                                     @RequestParam(value = "taskId") final UUID taskId,
                                   @RequestBody @Valid final CreateTaskDTO createTaskDTO,
                                   @CurrentUser final UserPrincipal currentUser){
         return new ResponseEntity(taskService.updateTask(tripId,taskId,createTaskDTO,currentUser),HttpStatus.OK);
@@ -56,14 +56,14 @@ public class TaskController {
 
     @DeleteMapping("/TaskDelete")
     public ResponseEntity deleteTask(@PathVariable("tripId") final UUID tripId,
-                                     @RequestParam(value = "taskId", defaultValue = "0") final UUID taskId,
+                                     @RequestParam(value = "taskId") final UUID taskId,
                                      @CurrentUser final UserPrincipal currentUser){
         return new ResponseEntity(taskService.deleteTask(tripId,taskId,currentUser),HttpStatus.OK);
     }
 
     @PostMapping("/TaskStatus")
     public ResponseEntity changeStatus(@PathVariable("tripId") final UUID tripId,
-                                       @RequestParam(value = "taskId", defaultValue = "0") final UUID taskId,
+                                       @RequestParam(value = "taskId") final UUID taskId,
                                        @RequestParam(value = "status", defaultValue = "false") final boolean status,
                                        @CurrentUser final UserPrincipal currentUser){
         return new ResponseEntity(taskService.changeStatus(tripId,taskId,status,currentUser),HttpStatus.OK);

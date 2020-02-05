@@ -85,7 +85,7 @@ public class TripController {
     @DeleteMapping("/RemoveParticipant")
     @ResponseBody
     public ResponseEntity  removeParticipant(@CurrentUser final UserPrincipal currentUser,
-                                             @RequestParam(value = "participantId", defaultValue = "0") final UUID participantId,
+                                             @RequestParam(value = "participantId") final UUID participantId,
                                              @RequestParam(value="tripId") final UUID tripId){
         return new ResponseEntity(tripService.deleteParticipant(tripId, participantId, currentUser), HttpStatus.OK);
     }
@@ -103,7 +103,7 @@ public class TripController {
 
     @GetMapping("/isParticipant")
     public ResponseEntity isParticipant(@CurrentUser final UserPrincipal currentUser,
-                                         @RequestParam(value = "tripId", defaultValue = "0") final UUID tripId){
+                                         @RequestParam(value = "tripId") final UUID tripId){
         return new ResponseEntity(tripService.isParticipant(tripId,currentUser),HttpStatus.OK);
     }
 }

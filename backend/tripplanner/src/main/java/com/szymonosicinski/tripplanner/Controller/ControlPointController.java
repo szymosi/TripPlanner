@@ -38,7 +38,7 @@ public class ControlPointController {
                                                @RequestParam(value = "page", defaultValue = "0") final int page,
                                                @RequestParam(value = "size", defaultValue = "100") final int pageSize){
         return controlPointService.getControlPoints(tripId, currentUser ,
-                PageRequest.of(page,pageSize, Sort.Direction.ASC,"id"));
+                PageRequest.of(page,pageSize, Sort.Direction.ASC,"order"));
     }
 
     @GetMapping("/GetAll")

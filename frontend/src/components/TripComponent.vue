@@ -11,7 +11,7 @@
   <v-tab-item><Route></Route></v-tab-item>  
   <v-tab-item><Budget></Budget></v-tab-item>
   <v-tab-item><Tasks></Tasks></v-tab-item>  
-  <v-tab-item>5</v-tab-item>  
+  <v-tab-item><Blog></Blog></v-tab-item>  
   </v-tabs>
 </div>
 </template>
@@ -21,12 +21,14 @@ import General from '@/components/Tabs/General'
 import Route from '@/components/Tabs/Route'
 import Budget from '@/components/Tabs/Budget'
 import Tasks from '@/components/Tabs/Tasks'
+import Blog from '@/components/Tabs/Blog'
 export default {
   components:{
     General,
     Route,
     Budget,
-    Tasks
+    Tasks,
+    Blog
   }
 }
 </script>

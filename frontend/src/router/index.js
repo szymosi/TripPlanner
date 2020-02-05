@@ -4,7 +4,7 @@ import VueAxios from 'vue-axios'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Trip from '../views/Trip'
-import test from '../components/test.vue'
+import Blog from '../views/Blog'
 
 Vue.use(VueRouter)
 Vue.use(VueAxios, axios)
@@ -21,10 +21,10 @@ const routes = [
     component: Trip
   },
   {
-    path: '/test',
-    name: 'test',
-    component: test
-  }
+    path: '/blog',
+    name: 'blog',
+    component: Blog
+  },
 ]
 
 const router = new VueRouter({

@@ -1,15 +1,17 @@
 <template>
 <div>
   <div id="list"><TripsList/></div>
-  <div id="content">2</div>
+  <div id="content"><BlogsList/></div>
 </div>
 </template>
 
 <script>
 import TripsList from '@/components/TripsList'
+import BlogsList from '@/components/BlogsList'
 export default {
   components:{
-  TripsList
+  TripsList,
+  BlogsList
   }
 }
 </script>
@@ -25,5 +27,6 @@ export default {
   }
   #content{
     float: left;
+    width: calc(100% - 7cm)
   }
 </style>

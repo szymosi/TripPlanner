@@ -16,11 +16,7 @@
         </v-col>
       </v-row>
       <list v-for="task in tasks" v-bind:key="task">
-        <b-list-group-item
-          id="ListElement"
-          @click="selectPoint(controlPoint)"
-          style="height: 100px"
-        >
+        <b-list-group-item>
           <v-row>
             <v-col cols="12" md="1">
               <v-checkbox

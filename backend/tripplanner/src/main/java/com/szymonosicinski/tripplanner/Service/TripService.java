@@ -2,15 +2,9 @@ package com.szymonosicinski.tripplanner.Service;
 
 import com.szymonosicinski.tripplanner.DTO.TripDTO.TripCreateDTO;
 import com.szymonosicinski.tripplanner.DTO.UserDTO.UserDTO;
-import com.szymonosicinski.tripplanner.Entity.Budget;
-import com.szymonosicinski.tripplanner.Entity.Expense;
-import com.szymonosicinski.tripplanner.Entity.Trip;
-import com.szymonosicinski.tripplanner.Entity.User;
+import com.szymonosicinski.tripplanner.Entity.*;
 import com.szymonosicinski.tripplanner.Exception.ExceptionMessage;
-import com.szymonosicinski.tripplanner.Repository.BudgetRepository;
-import com.szymonosicinski.tripplanner.Repository.ExpenseRepository;
-import com.szymonosicinski.tripplanner.Repository.TripRepository;
-import com.szymonosicinski.tripplanner.Repository.UserRepository;
+import com.szymonosicinski.tripplanner.Repository.*;
 import com.szymonosicinski.tripplanner.Util.UserPrincipal;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +32,8 @@ public class TripService {
     ExpenseRepository expenseRepository;
     @Autowired
     BudgetRepository budgetRepository;
+    @Autowired
+    BlogRepository blogRepository;
 
     public Trip create(TripCreateDTO tripCreateDTO, UserPrincipal currentUser){
         if(currentUser==null)
@@ -103,6 +99,12 @@ public class TripService {
         if(currentUser==null)
             throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
         return tripRepository.findAllByParticipant(currentUser.getId(), pageable);
+    }
+
+    public List<Trip> getByParticipant(UserPrincipal currentUser){
+        if(currentUser==null)
+            throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
+        return tripRepository.findAllByParticipant(currentUser.getId());
     }
 
     public String addParticipant(UUID tripId, String participant, UserPrincipal currentUser){
@@ -184,5 +186,13 @@ public class TripService {
         expense.setBudget(budget);
         budget.setExpense(expense);
         budgetRepository.save(budget);
+
+        Blog blog=new Blog();
+        blog.setTrip(trip);
+        blog.setVisibility(Blog.Visibility.participants);
+        blog.setName(trip.getName());
+        blog.setDescription(trip.getDescryption());
+        trip.setBlog(blog);
+        blogRepository.save(blog);
     }
 }

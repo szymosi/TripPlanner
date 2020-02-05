@@ -151,8 +151,4 @@ export default {
   #ListElement:hover{
     background-color: #3e7a2f;
   }
-
-  #ListElement:active{
-    background-color: #000000;
-  }
 </style>

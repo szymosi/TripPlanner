@@ -11,6 +11,9 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.security.PrivateKey;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -22,6 +25,7 @@ import java.util.UUID;
 )
 @Table(name="blog",schema="public")
 public class Blog {
+
 
     public static enum Visibility{guests, users, participants};
 
@@ -53,4 +57,8 @@ public class Blog {
     @JoinColumn(name="id_trip", referencedColumnName = "id")
     @JsonIgnore
     private Trip trip;
+
+    @OneToMany(mappedBy = "blog", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, targetEntity = BlogEntry.class)
+    @JsonIgnore
+    private Set<BlogEntry> blogEntries=new HashSet<>();
 }
