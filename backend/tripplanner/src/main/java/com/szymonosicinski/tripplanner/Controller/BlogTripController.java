@@ -44,10 +44,16 @@ public class BlogTripController {
         return new ResponseEntity(blogService.createBlogEntry(blogEntryCreateDTO, tripId, currentUser), HttpStatus.OK);
     }
 
+    @DeleteMapping("/DeleteEntry")
+    public ResponseEntity deleteEntry(@RequestParam(value = "entryId") final UUID entryId,
+                                      @CurrentUser final UserPrincipal currentUser){
+        return new ResponseEntity(blogService.deleteBlogEntry(entryId,currentUser),HttpStatus.OK);
+    }
+
     @PostMapping("/UpdateEntry")
     public ResponseEntity updateEntry(@RequestBody @Valid final BlogEntryCreateDTO blogEntryCreateDTO,
                                       @RequestParam(value = "entryId") final UUID entryId,
-                                     @CurrentUser final UserPrincipal currentUser){
+                                      @CurrentUser final UserPrincipal currentUser){
         return new ResponseEntity(blogService.updateBlogEntry(blogEntryCreateDTO,entryId,currentUser),HttpStatus.OK);
     }
 

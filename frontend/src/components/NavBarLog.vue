@@ -20,7 +20,7 @@
 import axios from 'axios';
 export default {
   created(){
-    this.interval = setInterval(() => this.refreshToken(), 10*60*1000);
+    this.interval = setInterval(() => this.refreshToken(), 5*60*1000);
   },
   beforeDestroy(){
     clearInterval(this.interval);
@@ -36,13 +36,7 @@ export default {
         }
       }).then(response => {
         this.$store.commit('setToken', response.data);
-      }).catch(
-        this.$toasted.show('Cannot refresh token', { 
-        theme: "outline", 
-        position: "top-right", 
-        duration : 1000
-        })
-      )
+      })
     }
   }
 }

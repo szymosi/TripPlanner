@@ -118,6 +118,8 @@ public class TripService {
                 .orElseThrow(()->new RuntimeException(ExceptionMessage.RESOURCE_NOT_FOUND.toString()));
         if(isParticipant(tripId, user))
             throw new RuntimeException(ExceptionMessage.IS_PARTICIPANT.toString());
+        if(user.getId().equals(trip.getOrganizer()))
+            throw new RuntimeException(ExceptionMessage.ORGANIZER_CANNOT_BE_PARTICIPANT.toString());
         try {
             tripRepository.saveParticipant(tripId,user.getId());
         } catch (Exception e){

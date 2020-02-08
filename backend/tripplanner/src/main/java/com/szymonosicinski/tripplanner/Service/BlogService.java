@@ -73,6 +73,17 @@ public class BlogService {
         return blogEntry;
     }
 
+    public BlogEntry deleteBlogEntry(UUID blogEntryId, UserPrincipal currentUser){
+        if(currentUser==null)
+            throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
+        BlogEntry blogEntry=blogEntryRepository.findById(blogEntryId)
+                .orElseThrow(()->new RuntimeException(ExceptionMessage.RESOURCE_NOT_FOUND.toString()));
+        if(!blogEntry.getBlog().getTrip().getOrganizer().equals(currentUser.getId()))
+            throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
+        blogEntryRepository.delete(blogEntry);
+        return blogEntry;
+    }
+
     public BlogEntry updateBlogEntry(BlogEntryCreateDTO blogEntryCreateDTO, UUID blogEntryId, UserPrincipal currentUser){
         if(currentUser==null)
             throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());

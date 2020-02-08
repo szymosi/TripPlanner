@@ -11,7 +11,8 @@ public enum ExceptionMessage {
     INPUT_ERROR("Wrong input data"),
     COST_ROOT("Cannot remove root expense"),
     NOT_PARTICIPANT("User is not participant"),
-    IS_PARTICIPANT("User already is participant");
+    IS_PARTICIPANT("User already is participant"),
+    ORGANIZER_CANNOT_BE_PARTICIPANT("Organizer cannot be added as participant");
 
     private final String exceptionMessage;
 

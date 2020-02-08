@@ -36,6 +36,10 @@ public class Expense {
     @Column(name = "cost")
     private float cost;
 
+    @NotNull
+    @Column(name = "actual_cost")
+    private float actualCost;
+
     @OneToOne(fetch = FetchType.EAGER, mappedBy = "expense", targetEntity = Budget.class)
     @JsonIgnore
     private Budget budget;
@@ -50,11 +54,14 @@ public class Expense {
 
     public void updateCost(ExpenseRepository expenseRepository) {
         float sum=0;
+        float actual_sum=0;
         for (Expense child: children) {
             sum+=child.getCost();
+            actual_sum+=child.getActualCost();
         }
-        if(sum!=cost) {
+        if(sum!=cost || actual_sum!=actualCost) {
             cost = sum;
+            actualCost = actual_sum;
             expenseRepository.save(this);
             if(parentExpense!=null)
                 parentExpense.updateCost(expenseRepository);

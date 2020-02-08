@@ -11,15 +11,19 @@
       </div>
 
       <div v-if="update && isOrganizer">
-        <v-text-field v-model="expense.name" label="Expense name" solo full-width dense>Name</v-text-field>
+        <v-text-field v-model="expense.name" label='Expense name' dense>Name</v-text-field>
         <v-text-field
           v-if="expense.children.length==0"
           v-model="expense.cost"
           label="Cost"
-          solo
-          full-width
           dense
         >Cost</v-text-field>
+        <v-text-field
+          v-if="expense.children.length==0"
+          v-model="expense.actualCost"
+          label="Actual Cost"
+          dense
+        >Actual Cost</v-text-field>
         <v-btn block @click="updateExpense">Update expense</v-btn>
         <br />
       </div>
@@ -29,7 +33,8 @@
           <h4 style="color:#ffffff">{{item.name}}</h4>
         </template>
         <template v-slot:append="{item}">
-          <h7 style="color:#ffffff">{{item.cost}}</h7>
+          <h7 style="color:#ffffff">{{item.actualCost}}</h7>
+          <h7 v-if="item.actualCost!=item.cost" style="color:#ffffff"> Planned: {{item.cost}}</h7>
           <div v-if="isOrganizer">
             <i @click="updateBTN(item)" class="fas fa-edit" style="padding: 5px; color:#ffffff"></i>
             <i
@@ -60,6 +65,7 @@ export default {
   data() {
     return {
       founds: 0,
+      leftFounds: 0,
       budget: null,
       expenses: [],
 
@@ -76,11 +82,6 @@ export default {
     this.getBudget();
   },
   computed: {
-    leftFounds() {
-      if(this.expenses[0]!=null)
-        return this.founds - this.expenses[0].cost;
-      return 0;
-    },
     isOrganizer: function() {
       return this.$store.getters.user.id == this.$store.getters.trip.organizer;
     }
@@ -110,6 +111,7 @@ export default {
           this.expenses[0] = response.data.expense;
           this.budget = response.data;
           if (this.$refs["tree"]) this.$refs["tree"].$forceUpdate();
+          this.leftFounds = response.data.founds - response.data.expense.actualCost
         })
         .catch(error => {
           this.showError(error);
@@ -149,6 +151,7 @@ export default {
               this.expense.id,
             {
               cost: this.cost,
+              actualCost: this.cost,
               name: this.name
             }
           )
@@ -198,6 +201,7 @@ export default {
               this.expense.id,
             {
               cost: this.expense.cost,
+              actualCost: this.expense.actualCost,
               name: this.expense.name
             }
           )

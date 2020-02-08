@@ -15,4 +15,7 @@ public class ExpenseDTO {
 
     @NotNull
     private float cost;
+
+    @NotNull
+    private float actualCost;
 }
