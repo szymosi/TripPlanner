@@ -18,6 +18,7 @@
           v-model="descryption"
           :rules="descryptionRules"
           counter="5000"
+          no-resize
         ></v-textarea>
 
         <h5 v-if="dates[0]&&dates[1]">Start date: {{reverseDate[0]}} End date: {{reverseDate[1]}}</h5>
@@ -33,7 +34,7 @@
 <script>
 import axios from "axios";
 export default {
-  data: function() {
+  data() {
     return {
       name: "",
       descryption: "",
@@ -51,16 +52,16 @@ export default {
     };
   },
   computed: {
-    reverseDate: function() {
+    reverseDate() {
       if (this.dates[0] > this.dates[1]) return [this.dates[1], this.dates[0]];
       else return this.dates;
     }
   },
   methods: {
-    cancel: function() {
+    cancel() {
       this.$store.commit("setCreatingTrip", false);
     },
-    createTrip: function() {
+    createTrip() {
       if (
         this.name.length < 10 ||
         this.name.length > 100 ||
@@ -82,10 +83,6 @@ export default {
             descryption: this.descryption,
             startDate: this.reverseDate[0],
             endDate: this.reverseDate[1]
-
-            /*headers:{
-                    'Authorization': 'Bearer:'+this.$store.getters.token
-                }*/
           })
           .then(response => {
             this.$toasted.show("Trip " + response.data.name + " created", {

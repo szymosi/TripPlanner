@@ -47,7 +47,7 @@
           </v-col>
           <v-col cols="12" md="1" v-if="isOrganizer">
             <i @click="updateBTN(entry)" class="fas fas fa-edit" style="padding: 2px"></i>
-            <i class="fas fas fa-trash" style="padding: 2px"></i>
+            <i @click="deleteEntry(entry)" class="fas fas fa-trash" style="padding: 2px"></i>
           </v-col>
         </v-row>
       </list>
@@ -90,7 +90,7 @@ export default {
     this.getEntries();
   },
   computed: {
-    isOrganizer: function() {
+    isOrganizer() {
       return this.$store.getters.user.id == this.$store.getters.trip.organizer;
     }
   },
@@ -195,6 +195,30 @@ export default {
       this.add = false;
       this.entry = null;
     },
+
+    async deleteEntry(entry) {
+      axios
+        .delete(
+          this.$url +
+            "/" +
+            this.$store.getters.trip.id +
+            "/Blog/DeleteEntry",
+          {
+            headers: {
+              Authorization: "Bearer:" + this.$store.getters.token
+            },
+            params: {
+              entryId: entry.id
+            }
+          }
+        )
+        .catch(error => {
+          this.showError(error);
+        });
+      await new Promise(r => setTimeout(r, 200));
+      this.getEntries();
+    },
+
     async updateEntry() {
       (axios.defaults.headers.common["Authorization"] =
         "Bearer:" + this.$store.getters.token),
@@ -226,7 +250,7 @@ export default {
       this.update = false;
       this.entry = null;
     },
-    showError: function(error) {
+    showError(error) {
       if (error.response) {
         this.message = error.response.data.message;
       } else if (error.request) {

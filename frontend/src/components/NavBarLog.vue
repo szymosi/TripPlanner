@@ -26,10 +26,10 @@ export default {
     clearInterval(this.interval);
   },
   methods:{
-    logout: function(){
+    logout(){
       this.$store.commit('clearStore');
     },
-    refreshToken: function(){
+    refreshToke(){
       return axios.get(this.$url+'/User/RefreshToken',{
         headers:{
           Authorization: 'Bearer:'+this.$store.getters.token

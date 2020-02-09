@@ -92,7 +92,7 @@ export default {
     };
   },
   computed: {
-    isOrganizer: function() {
+    isOrganizer() {
       return this.$store.getters.user.id == this.$store.getters.trip.organizer;
     }
   },
@@ -113,7 +113,7 @@ export default {
         this.getControlPoints(this.page - 1);
       }
     },
-    selectPoint: function(point) {
+    selectPoint(point) {
       this.controlPoint = point;
       const marker = {
         lat: point.latitude,
@@ -127,10 +127,10 @@ export default {
       this.getControlPoints(this.page - 1);
       this.controlPoint = null;
     },
-    setPlace: function(place) {
+    setPlace(place) {
       this.place = place;
     },
-    addMarker: function() {
+    addMarker() {
       if (this.place) {
         const marker = {
           lat: this.place.geometry.location.lat(),
@@ -140,7 +140,7 @@ export default {
         this.center = marker;
       }
     },
-    addMarkerLatLng: function(lat, lng) {
+    addMarkerLatLng(lat, lng) {
       const marker = {
         lat,
         lng
@@ -148,7 +148,7 @@ export default {
       this.markers.push({ position: marker });
       this.center = marker;
     },
-    geolocate: function() {
+    geolocate() {
       navigator.geolocation.getCurrentPosition(position => {
         this.center = {
           lat: position.coords.latitude,
@@ -156,7 +156,7 @@ export default {
         };
       });
     },
-    getControlPoints: function(pageNr) {
+    getControlPoints(pageNr) {
       axios
         .get(this.$url + "/" + this.$store.getters.trip.id + "/Route", {
           headers: {
@@ -176,7 +176,7 @@ export default {
         });
       this.$forceUpdate();
     },
-    getAllControlPoints: function() {
+    getAllControlPoints() {
       axios
         .get(this.$url + "/" + this.$store.getters.trip.id + "/Route/GetAll", {
           headers: {
@@ -195,7 +195,7 @@ export default {
           this.showError(error);
         });
     },
-    deleteControlPoint: function() {
+    deleteControlPoint() {
       axios
         .delete(
           this.$url +
@@ -208,7 +208,6 @@ export default {
             },
             params: {
               controlPointId: this.controlPoint.id
-              //tripId: this.$store.getters.trip.id,
             }
           }
         )
@@ -223,7 +222,7 @@ export default {
           this.showError(error);
         });
     },
-    addControlPoint: function(lat, lng) {
+    addControlPoint(lat, lng) {
       if (this.name == "") {
         this.name = lat + " " + lng;
       }
@@ -248,7 +247,7 @@ export default {
             this.showError(error);
           });
     },
-    changeOrder: function(pos) {
+    changeOrder(pos) {
       (axios.defaults.headers.common["Authorization"] =
         "Bearer:" + this.$store.getters.token),
         axios
@@ -275,7 +274,7 @@ export default {
             this.showError(error);
           });
     },
-    showError: function(error) {
+    showError(error) {
       if (error.response) {
         this.message = error.response.data.message;
       } else if (error.request) {

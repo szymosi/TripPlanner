@@ -37,7 +37,7 @@
 <script>
 import axios from 'axios';
 export default {
-    data: function(){
+    data(){
         return{
         login: '',
         password: '',
@@ -53,7 +53,7 @@ export default {
         passwordRepeatValidation(){return this.password==this.passwordRepeat && this.password.length>0}
     },
     methods:{
-        register: function(){
+        register(){
           this.$eventHub.$emit('Registered');
 
           axios.put(this.$url+'/User/Registration',{

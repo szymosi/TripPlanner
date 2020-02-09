@@ -82,12 +82,12 @@ export default {
     this.getTasks();
   },
   computed: {
-    isOrganizer: function() {
+    isOrganizer() {
       return this.$store.getters.user.id == this.$store.getters.trip.organizer;
     }
   },
   methods: {
-    getTasks: function() {
+    getTasks() {
       axios
         .get(this.$url + "/" + this.$store.getters.trip.id + "/Task", {
           headers: {
@@ -194,7 +194,7 @@ export default {
       await new Promise(r => setTimeout(r, 200));
       this.getTasks();
     },
-    showError: function(error) {
+    showError(error) {
       if (error.response) {
         this.message = error.response.data.message;
       } else if (error.request) {

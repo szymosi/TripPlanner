@@ -89,10 +89,17 @@ public class TripService {
         return trip;
     }
 
+
     public Page<Trip> getByOrganizer(UserPrincipal currentUser, Pageable pageable){
         if(currentUser==null)
             throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
         return tripRepository.findAllByOrganizer(currentUser.getId(),pageable);
+    }
+
+    public List<Trip> getByOrganizer(UserPrincipal currentUser){
+        if(currentUser==null)
+            throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
+        return tripRepository.findAllByOrganizer(currentUser.getId());
     }
 
     public Page<Trip> getByParticipant(UserPrincipal currentUser, Pageable pageable){

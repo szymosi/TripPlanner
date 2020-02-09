@@ -10,7 +10,7 @@
 <style>
 
 html, body {
-  height: 100%;
+  min-height: 100vh;
   min-width: 800px;
 }
 
@@ -20,7 +20,7 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  height: 100%;
+  min-height: 100vh;
   background-color: #a7b8a3
 }
 

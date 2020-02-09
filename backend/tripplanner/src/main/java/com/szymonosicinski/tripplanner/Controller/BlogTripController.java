@@ -2,15 +2,10 @@ package com.szymonosicinski.tripplanner.Controller;
 
 import com.szymonosicinski.tripplanner.DTO.BlogDTO.BlogDTO;
 import com.szymonosicinski.tripplanner.DTO.BlogDTO.BlogEntryCreateDTO;
-import com.szymonosicinski.tripplanner.Entity.Blog;
-import com.szymonosicinski.tripplanner.Entity.BlogEntry;
 import com.szymonosicinski.tripplanner.Service.BlogService;
 import com.szymonosicinski.tripplanner.Util.CurrentUser;
 import com.szymonosicinski.tripplanner.Util.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

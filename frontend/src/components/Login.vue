@@ -17,7 +17,7 @@
 <script>
 import axios from 'axios';
 export default {
-    data: function(){
+    data(){
         return{
         login: '',
         password: '',
@@ -25,7 +25,7 @@ export default {
         };
     },
     methods:{
-        loginFunc: function(){
+        loginFunc(){
 
           axios.post(this.$url+'/User/Login',{
           username: this.login,

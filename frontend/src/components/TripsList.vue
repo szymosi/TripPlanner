@@ -38,7 +38,7 @@
 <script>
 import axios from 'axios';
 export default {
-  data: function(){
+  data(){
     return{        
       organizingTrips: [],
       participatingTrips: [],
@@ -53,23 +53,23 @@ export default {
     };
   },
 
-  mounted: function() {
+  mounted() {
     this.getOrganizingTrips(0)
     this.getParticipatingTrips(0)
   },
   
   methods:{
-    createTrip: function(){
+    createTrip(){
       this.$router.push({path:'trip', query: {trip: undefined}})
       this.$store.commit('setCreatingTrip', true);
     },
-    setChoosenTrip: function(trip){
+    setChoosenTrip(trip){
       this.$store.commit('setCreatingTrip', false);
       this.$store.commit('setTrip', trip);
       this.$router.push({path:'trip',query: {trip: trip.id}})
       window.location.reload()
     },
-    getOrganizingTrips: function(page){
+    getOrganizingTrips(page){
       return axios.get(this.$url+'/Trip/Organizer',{
       headers:{
         Authorization: 'Bearer:'+this.$store.getters.token
@@ -101,7 +101,7 @@ export default {
     })
     },
 
-    getParticipatingTrips: function(page){
+    getParticipatingTrips(page){
       return axios.get(this.$url+'/Trip/Participant',{
       headers:{
         Authorization: 'Bearer:'+this.$store.getters.token

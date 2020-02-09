@@ -9,32 +9,21 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @Getter
 @Setter
 @Entity
-@Table(name="blogentry",schema = "public")
-public class BlogEntry {
+@Table(name="comment",schema="public")
+public class Comment {
 
     @Id
-    @Column(name = "id")
+    @Column(name="id")
     @org.hibernate.annotations.Type(type = "pg-uuid")
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
-
-    @NotNull
-    @Length(max=50)
-    @Column(name="name")
-    private String name;
-
-    @NotNull
-    @Column(name="text")
-    private String text;
 
     @NotNull
     @Column(name="date")
@@ -42,12 +31,19 @@ public class BlogEntry {
     private Date date;
 
     @NotNull
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_blog", referencedColumnName = "id")
-    private Blog blog;
+    @Length(max=500)
+    @Column(name="text")
+    private String text;
 
-    @OneToMany(mappedBy = "blogEntry", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, targetEntity = Comment.class)
+    @NotNull
+    @ManyToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name="id_user", referencedColumnName = "id")
+    private User user;
+
+    @NotNull
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="id_blogentry", referencedColumnName = "id")
     @JsonIgnore
-    private List<Comment> comments = new ArrayList<>();
+    private BlogEntry blogEntry;
+
 }

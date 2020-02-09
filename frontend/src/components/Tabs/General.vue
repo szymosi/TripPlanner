@@ -9,6 +9,7 @@
           v-model="descryption"
           :rules="descryptionRules"
           counter="5000"
+          no-resize=""
         ></v-textarea>
         <v-row>
           <v-text-field
@@ -104,7 +105,7 @@
 <script>
 import axios from "axios";
 export default {
-  data: function() {
+  data() {
     return {
       name: this.$store.getters.trip.name,
       descryption: this.$store.getters.trip.descryption,
@@ -131,18 +132,18 @@ export default {
     };
   },
   computed: {
-    isOrganizer: function() {
+    isOrganizer() {
       return this.$store.getters.user.id == this.$store.getters.trip.organizer;
     }
   },
-  mounted: function() {
+  mounted() {
     this.getParticipants(0);
   },
   methods: {
-    setParticipant: function(user) {
+    setParticipant(user) {
       this.participant = user;
     },
-    updateTrip: function() {
+    updateTrip() {
       if (
         this.name.length < 10 ||
         this.name.length > 100 ||
@@ -187,7 +188,7 @@ export default {
             this.showError(error);
           });
     },
-    deleteTrip: function() {
+    deleteTrip() {
       return axios
         .delete(this.$url + "/Trip/Delete", {
           headers: {
@@ -213,7 +214,7 @@ export default {
           this.showError(error);
         });
     },
-    getParticipants: function(page) {
+    getParticipants(page) {
       return axios
         .get(this.$url + "/Trip/Participants", {
           headers: {
@@ -286,7 +287,7 @@ export default {
       await new Promise(r => setTimeout(r, 200));
       this.getParticipants(this.participantsPage - 1);
     },
-    showError: function(error) {
+    showError(error) {
       if (error.response) {
         this.message = error.response.data.message;
       } else if (error.request) {

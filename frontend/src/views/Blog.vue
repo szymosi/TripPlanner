@@ -3,12 +3,8 @@
     <NavBar v-if="this.$store.getters.user==null"></NavBar>
     <NavBarLog v-else></NavBarLog>
     <list v-for="entry in entries" v-bind:key="entry">
-      <div id="ListElement" style="padding: 5px">
-          <v-row>
-              <h4 style="text-align: left">{{entry.name}}</h4>
-              <h6 style="text-align: right">{{entry.date}}</h6>
-          </v-row>
-          <p>{{entry.text}}</p>
+      <div style="padding: 5px">
+        <BlogEntry :entry="entry"></BlogEntry>
       </div>
     </list>
     <v-pagination
@@ -26,16 +22,19 @@
 <script>
 import NavBar from "@/components/NavBar";
 import NavBarLog from "@/components/NavBarLog";
+import BlogEntry from "@/components/BlogEntry";
 import axios from "axios";
 
 export default {
   components: {
     NavBar,
-    NavBarLog
+    NavBarLog,
+    BlogEntry
   },
   data: function() {
     return {
       entries: null,
+      comments: null,
 
       page: 1,
       pages: 0

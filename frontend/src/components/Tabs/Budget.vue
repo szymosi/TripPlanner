@@ -52,7 +52,7 @@
       <v-text-field v-model="founds" solo full-width dense></v-text-field>
 
       <h4 style="color:#ffffff">Founds left:</h4>
-      <v-text-field v-model="leftFounds" solo full-width dense></v-text-field>
+      <v-text-field v-model="leftFounds" readonly solo full-width dense></v-text-field>
 
       <v-btn block v-if="isOrganizer" @click="updateBudget">Update budget</v-btn>
     </div>
@@ -82,7 +82,7 @@ export default {
     this.getBudget();
   },
   computed: {
-    isOrganizer: function() {
+    isOrganizer() {
       return this.$store.getters.user.id == this.$store.getters.trip.organizer;
     }
   },
@@ -181,7 +181,6 @@ export default {
             }
           }
         )
-        .then(this.getBudget())
         .catch(error => {
           this.showError(error);
         });
@@ -205,7 +204,6 @@ export default {
               name: this.expense.name
             }
           )
-          .then(this.getBudget())
           .catch(error => {
             this.showError(error);
           });
@@ -213,7 +211,7 @@ export default {
       await new Promise(r => setTimeout(r, 200));
       this.getBudget();
     },
-    showError: function(error) {
+    showError(error) {
       if (error.response) {
         this.message = error.response.data.message;
       } else if (error.request) {

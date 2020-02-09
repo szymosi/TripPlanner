@@ -55,6 +55,7 @@ public class BlogService {
         if(currentUser!=null) {
             blogs.addAll(blogRepository.findAllByVisibilityIsNot(Blog.Visibility.participants));
             List<Trip> trips = tripService.getByParticipant(currentUser);
+            trips.addAll(tripService.getByOrganizer(currentUser));
             for (Trip trip : trips) {
                 blogs.addAll(blogRepository.findAllByVisibilityAndTripId(Blog.Visibility.participants, trip.getId()));
             }
@@ -114,6 +115,30 @@ public class BlogService {
                 !blog.getTrip().getOrganizer().equals(currentUser.getId()))
                     throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
                 return blogEntryRepository.findAllByBlogId(blogId, pageable);
+        }
+        throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
+    }
+
+    public boolean hasAcces(UUID blogId, UserPrincipal currentUser){
+        if(currentUser==null)
+            throw new RuntimeException(ExceptionMessage.USER_NOT_LOGGED_IN.toString());
+        Blog blog = blogRepository.findById(blogId)
+                .orElseThrow(()->new RuntimeException(ExceptionMessage.RESOURCE_NOT_FOUND.toString()));
+        switch (blog.getVisibility()){
+            case guests:
+                return true;
+            case users:
+                if(currentUser!=null)
+                    return true;
+                else
+                    throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
+            case participants:
+                if(currentUser==null)
+                    throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
+                if(!tripService.isParticipant(blog.getTrip().getId(),currentUser) &&
+                        !blog.getTrip().getOrganizer().equals(currentUser.getId()))
+                    throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
+                return true;
         }
         throw new RuntimeException(ExceptionMessage.ACCESS_DENIED.toString());
     }

@@ -31,6 +31,7 @@ public class Trip {
     @Column(name="name")
     private String name;
 
+    @NotNull
     @Length(max=5000)
     @Column(name="descryption")
     private String descryption;

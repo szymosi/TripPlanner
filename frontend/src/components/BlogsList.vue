@@ -65,7 +65,7 @@ export default {
           this.showError(error);
         });
     },
-    showError: function(error) {
+    showError(error) {
       if (error.response) {
         this.message = error.response.data.message;
       } else if (error.request) {
