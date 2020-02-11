@@ -3,14 +3,12 @@
     <NavBar v-if="this.$store.getters.user==null"></NavBar>
     <NavBarLog v-else></NavBarLog>
     <App v-if="this.$store.getters.user!=null" style="height: calc(100vh - 56px);"></App>
-    <BlogsList></BlogsList>
   </div>
 </template>
 
 <script>
 import NavBar from '@/components/NavBar'
 import NavBarLog from '@/components/NavBarLog'
-import BlogsList from '@/components/BlogsList'
 import App from '@/views/App'
 import axios from 'axios';
 
@@ -19,7 +17,6 @@ export default {
     NavBar,
     NavBarLog,
     App,
-    BlogsList
   },
   Created() {
 

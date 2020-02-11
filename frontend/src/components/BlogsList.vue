@@ -84,8 +84,6 @@ export default {
 </script>
 
 <style scoped>
-#pagination {
-}
 
 #ListElement {
   text-align: left;

@@ -61,9 +61,15 @@
         </b-popover>
       </div>
     </div>
-    <gmap-map :center="center" :zoom="10" style="width:60%; height: 100%; float: left;">
+    <!--<gmap-map
+      ref="map"
+      :center="center"
+      :zoom="10"
+      style="width:60%; height: 100%; float: left;"
+    >
       <gmap-marker :key="index" v-for="(m, index) in markers" :position="m.position"></gmap-marker>
-    </gmap-map>
+    </gmap-map>-->
+    <iframe v-bind:src="mapURL" style="width:60%; height: 100%; float: left;"></iframe>
   </div>
 </template>
 
@@ -72,6 +78,8 @@ import axios from "axios";
 export default {
   data() {
     return {
+      mapURL: "",
+
       center: { lat: 52.22977, lng: 21.01178 },
       markers: [],
       place: null,
@@ -102,6 +110,45 @@ export default {
     this.getControlPoints(0);
   },
   methods: {
+    async mapUpdate() {
+      await new Promise(r => setTimeout(r, 200));
+      if (this.controlPoints.length == 0)
+        this.mapURL =
+          "https://www.google.com/maps/embed/v1/place?key=AIzaSyD7tKWjIs6wYOmFHWmcC8-X-m7gOD-kLDU&q=warsaw";
+      if (this.controlPoints.length == 1)
+        this.mapURL =
+          "https://www.google.com/maps/embed/v1/place?key=AIzaSyD7tKWjIs6wYOmFHWmcC8-X-m7gOD-kLDU&q=" +
+          this.controlPoints[0].latitude +
+          "," +
+          this.controlPoints[0].longitude;
+      if (this.controlPoints.length > 1) {
+        const length = this.controlPoints.length;
+        this.mapURL =
+          "https://www.google.com/maps/embed/v1/directions?key=AIzaSyD7tKWjIs6wYOmFHWmcC8-X-m7gOD-kLDU" +
+          "&origin=" +
+          this.controlPoints[0].latitude +
+          "," +
+          this.controlPoints[0].longitude +
+          "&destination=" +
+          this.controlPoints[length - 1].latitude +
+          "," +
+          this.controlPoints[length - 1].longitude;
+        if (length > 2) {
+          this.mapURL +=
+            "&waypoints=" +
+            this.controlPoints[1].latitude +
+            "," +
+            this.controlPoints[1].longitude;
+          for (let index = 2; index < length-1; index++) {
+            this.mapURL +=
+              "|" +
+              this.controlPoints[index].latitude +
+              "," +
+              this.controlPoints[index].longitude;
+          }
+        }
+      }
+    },
     async addPointBtn() {
       if (this.place) {
         this.addControlPoint(
@@ -109,8 +156,9 @@ export default {
           this.place.geometry.location.lng()
         ),
           this.addMarker(),
-          await new Promise(r => setTimeout(r, 200));
+        await new Promise(r => setTimeout(r, 500));
         this.getControlPoints(this.page - 1);
+          this.generateMapUrl();
       }
     },
     selectPoint(point) {
@@ -156,7 +204,7 @@ export default {
         };
       });
     },
-    getControlPoints(pageNr) {
+    async getControlPoints(pageNr) {
       axios
         .get(this.$url + "/" + this.$store.getters.trip.id + "/Route", {
           headers: {
@@ -174,6 +222,8 @@ export default {
         .catch(error => {
           this.showError(error);
         });
+      await new Promise(r => setTimeout(r, 200));
+      this.mapUpdate();
       this.$forceUpdate();
     },
     getAllControlPoints() {
