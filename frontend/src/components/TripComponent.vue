@@ -1,6 +1,7 @@
 <template>
 <div>
-  <v-tabs fixed-tabs show-arrows background-color="#a7b8a3">
+  <h1 v-if="$store.getters.trip==null">Select trip</h1>
+  <v-tabs v-else fixed-tabs show-arrows background-color="#a7b8a3">
     <v-tab>General</v-tab>
     <v-tab>Route</v-tab>
     <v-tab>Budget</v-tab>

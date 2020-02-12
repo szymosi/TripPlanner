@@ -60,6 +60,11 @@
           <b-button @click="delPointBtn" style="background-color: #687864;">Yes</b-button>
         </b-popover>
       </div>
+      <v-radio-group v-model="meanOfTransport" :click="mapUpdate()">
+        <v-radio label="Car" value="driving"></v-radio>
+        <v-radio label="Bicycle" value="bicycling"></v-radio>
+        <v-radio label="Walking" value="walking"></v-radio>
+      </v-radio-group>
     </div>
     <!--<gmap-map
       ref="map"
@@ -79,6 +84,7 @@ export default {
   data() {
     return {
       mapURL: "",
+      meanOfTransport: "driving",
 
       center: { lat: 52.22977, lng: 21.01178 },
       markers: [],
@@ -139,7 +145,7 @@ export default {
             this.controlPoints[1].latitude +
             "," +
             this.controlPoints[1].longitude;
-          for (let index = 2; index < length-1; index++) {
+          for (let index = 2; index < length - 1; index++) {
             this.mapURL +=
               "|" +
               this.controlPoints[index].latitude +
@@ -147,6 +153,7 @@ export default {
               this.controlPoints[index].longitude;
           }
         }
+        this.mapURL += "&mode=" + this.meanOfTransport;
       }
     },
     async addPointBtn() {
@@ -156,9 +163,9 @@ export default {
           this.place.geometry.location.lng()
         ),
           this.addMarker(),
-        await new Promise(r => setTimeout(r, 500));
+          await new Promise(r => setTimeout(r, 500));
         this.getControlPoints(this.page - 1);
-          this.generateMapUrl();
+        this.generateMapUrl();
       }
     },
     selectPoint(point) {
